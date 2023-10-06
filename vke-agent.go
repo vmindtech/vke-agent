@@ -25,7 +25,6 @@ type InitMaster struct {
 	Rke2AgentType string
 }
 
-// sistem güncelleme
 func updateSystem() error {
 	fmt.Println(InfoColor, "System is updating...")
 	updateCommand := exec.Command("sudo", "apt", "update", "-y")
@@ -34,7 +33,6 @@ func updateSystem() error {
 	return updateCommand.Run()
 }
 
-// rke2 dizin oluşturma
 func createDirectory(path string) error {
 	fmt.Printf(InfoColor, "'%s' creates directory...\n", path)
 	mkdirCommand := exec.Command("sudo", "mkdir", "-p", path)
@@ -43,7 +41,6 @@ func createDirectory(path string) error {
 	return mkdirCommand.Run()
 }
 
-// RKE2 yükleme
 func rke2Install(version string, rke2AgentType string) error {
 	fmt.Println(InfoColor, "RKE2 Install...")
 	curlCommand := "curl -sfL https://get.rke2.io | INSTALL_RKE2_VERSION=" + version + " INSTALL_RKE2_TYPE=" + rke2AgentType + " sh -"
@@ -82,7 +79,6 @@ func rke2ServiceEnable(rke2AgentType string) error {
 	}
 }
 
-// RKE2 Config oluşturma
 func rke2Config(initialize bool, serverAddress string, rke2AgentType string, rke2Token string, TlsSan string) error {
 	fmt.Println(InfoColor, "RKE2 config creating...")
 	hostname, err := os.Hostname()

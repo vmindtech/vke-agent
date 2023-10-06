@@ -30,7 +30,7 @@ Follow these steps to build and run the project:
     ```
 3. Use the vke-agent command to create Kubernetes nodes:
    ```bash
-    env GOOS=linux GOARCH=amd64 go build vke-agent.go
+    ./vke-init -initialize=true -rke2AgentType="server" -rke2Token="tiNI9s62On77H05Y6vsWtVkcZW7el7TfU2z=gwRJt" -serverAddress="LB-ADDRESS" -kubeversion="v1.28.2+rke2r1"  -tlsSan="LB-ADDRESS"
     ```
    You can use the above command to create the master node. For worker nodes, you can use the following commands:
       ```bash
