@@ -1,0 +1,10 @@
+{{ range . }}
+token: {{ .Token }}
+tls-san:
+  - {{ .TlsSan }}
+node-name: {{ .NodeName }}
+{{ if .Initialize }}{{ else }}server: {{.ServerAddress}}{{ end }}
+{{ if (eq .Rke2AgentType "server") }}node-taint:
+  - "CriticalAddonsOnly=true:NoExecute"
+{{ else }}{{ end }}
+{{ end }}
