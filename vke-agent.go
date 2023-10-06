@@ -52,13 +52,13 @@ func rke2Install(version string, rke2AgentType string) error {
 
 func rke2ServiceStart(rke2AgentType string) error {
 	fmt.Println(InfoColor, "RKE2 started...")
-	if rke2AgentType == "server" {
-		rke2ServiceStartCommand := exec.Command("sudo", "systemctl", "start", "rke2-server")
+	if rke2AgentType == "agent" {
+		rke2ServiceStartCommand := exec.Command("sudo", "systemctl", "start", "rke2-agent")
 		rke2ServiceStartCommand.Stdout = os.Stdout
 		rke2ServiceStartCommand.Stderr = os.Stderr
 		return rke2ServiceStartCommand.Run()
 	} else {
-		rke2ServiceStartCommand := exec.Command("sudo", "systemctl", "start", "rke2-agent")
+		rke2ServiceStartCommand := exec.Command("sudo", "systemctl", "start", "rke2-server")
 		rke2ServiceStartCommand.Stdout = os.Stdout
 		rke2ServiceStartCommand.Stderr = os.Stderr
 		return rke2ServiceStartCommand.Run()
@@ -66,13 +66,13 @@ func rke2ServiceStart(rke2AgentType string) error {
 }
 func rke2ServiceEnable(rke2AgentType string) error {
 	fmt.Println(InfoColor, "RKE2 Enabled...")
-	if rke2AgentType == "server" {
-		rke2ServiceEnableCommand := exec.Command("sudo", "systemctl", "enable", "rke2-server")
+	if rke2AgentType == "agent" {
+		rke2ServiceEnableCommand := exec.Command("sudo", "systemctl", "enable", "rke2-agent")
 		rke2ServiceEnableCommand.Stdout = os.Stdout
 		rke2ServiceEnableCommand.Stderr = os.Stderr
 		return rke2ServiceEnableCommand.Run()
 	} else {
-		rke2ServiceEnableCommand := exec.Command("sudo", "systemctl", "enable", "rke2-agent")
+		rke2ServiceEnableCommand := exec.Command("sudo", "systemctl", "enable", "rke2-server")
 		rke2ServiceEnableCommand.Stdout = os.Stdout
 		rke2ServiceEnableCommand.Stderr = os.Stderr
 		return rke2ServiceEnableCommand.Run()
