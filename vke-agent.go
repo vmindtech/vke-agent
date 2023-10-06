@@ -110,7 +110,6 @@ func rke2Config(initialize bool, serverAddress string, rke2AgentType string, rke
 func main() {
 	serverAddress := flag.String("serverAddress", "", "Server Address")
 	kubeversion := flag.String("kubeversion", "", "Kube Version")
-	//clusterID := flag.String("clusterID", "", "Cluster ID")
 	tlsSan := flag.String("tlsSan", "", "TLS San")
 	initialize := flag.Bool("initialize", false, "Initialize")
 	rke2Token := flag.String("rke2Token", "", "RKE2 Token")
