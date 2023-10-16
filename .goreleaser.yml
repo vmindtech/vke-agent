@@ -1,0 +1,23 @@
+before:
+  hooks:
+    - go mod download
+builds:
+  - main: vke-agent.go
+    goos:
+      - linux
+    goarch:
+      - amd64
+checksum:
+  name_template: 'checksums.txt'
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+archives:
+- id: vke-agent-archive
+  name_template: |-
+    vke-agent_{{.Tag}}_{{.Os}}_{{.Arch}}
+  builds:
+    - vke-agent
+  files: ["LICENSE","config.yaml"]
