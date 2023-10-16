@@ -1,6 +1,24 @@
-# vke-agent
+<a name="readme-top"></a>
 
-`vke-agent` is a simple command-line tool used for setting up Kubernetes clusters. With this tool, you can quickly provision both master and worker nodes.
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+
+
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+
+  <h3 align="center">VKE-AGENT</h3>
+
+  <p align="center">
+    Simple command line tool for setting up Kubernetes clusters. With this tool you can quickly provision both master and worker nodes.
+    <br />
+  </p>
+</div>
 
 ## Getting Started
 
@@ -38,6 +56,19 @@ Follow these steps to build and run the project:
 
     ```
 
-# License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+<!-- LICENSE -->
+## License
 
+Distributed under the APACHE-2.0 License. See `LICENSE.txt` for more information.
+
+
+[contributors-shield]: https://img.shields.io/github/contributors/vmindtech/awsx?style=for-the-badge
+[contributors-url]: https://github.com/vmindtech/vke-agent/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/vmindtech/awsx?style=for-the-badge
+[forks-url]: https://github.com/vmindtech/vke-agent/network/members
+[stars-shield]: https://img.shields.io/github/stars/vmindtech/awsx?style=for-the-badge
+[stars-url]: https://github.com/vmindtech/vke-agent/stargazers
+[issues-shield]: https://img.shields.io/github/issues/vmindtech/awsx?style=for-the-badge
+[issues-url]: https://github.com/vmindtech/vke-agent/issues
+[license-shield]: https://img.shields.io/github/license/vmindtech/awsx?style=for-the-badge
+[license-url]: https://github.com/vmindtech/vke-agent/blob/main/LICENSE.txt
