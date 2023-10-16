@@ -48,7 +48,7 @@ Follow these steps to build and run the project:
     ```
 3. Use the vke-agent command to create Kubernetes nodes:
    ```bash
-    ./vke-init -initialize=true -rke2AgentType="server" -rke2Token="tiNI9s62On77H05Y6vsWtVkcZW7el7TfU2z=gwRJt" -serverAddress="LB-ADDRESS" -kubeversion="v1.28.2+rke2r1"  -tlsSan="LB-ADDRESS"
+    ./vke-gent -initialize=true -rke2AgentType="server" -rke2Token="tiNI9s62On77H05Y6vsWtVkcZW7el7TfU2z=gwRJt" -serverAddress="LB-ADDRESS" -kubeversion="v1.28.2+rke2r1"  -tlsSan="LB-ADDRESS"
     ```
    You can use the above command to create the master node. For worker nodes, you can use the following commands:
       ```bash
@@ -59,16 +59,16 @@ Follow these steps to build and run the project:
 <!-- LICENSE -->
 ## License
 
-Distributed under the APACHE-2.0 License. See `LICENSE.txt` for more information.
+Distributed under the APACHE-2.0 License. See `LICENSE` for more information.
 
 
-[contributors-shield]: https://img.shields.io/github/contributors/vmindtech/awsx?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/vmindtech/vke-agent?style=for-the-badge
 [contributors-url]: https://github.com/vmindtech/vke-agent/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/vmindtech/awsx?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/vmindtech/vke-agent?style=for-the-badge
 [forks-url]: https://github.com/vmindtech/vke-agent/network/members
-[stars-shield]: https://img.shields.io/github/stars/vmindtech/awsx?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/vmindtech/vke-agent?style=for-the-badge
 [stars-url]: https://github.com/vmindtech/vke-agent/stargazers
-[issues-shield]: https://img.shields.io/github/issues/vmindtech/awsx?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/vmindtech/vke-agent?style=for-the-badge
 [issues-url]: https://github.com/vmindtech/vke-agent/issues
-[license-shield]: https://img.shields.io/github/license/vmindtech/awsx?style=for-the-badge
-[license-url]: https://github.com/vmindtech/vke-agent/blob/main/LICENSE.txt
+[license-shield]: https://img.shields.io/github/license/vmindtech/vke-agent?style=for-the-badge
+[license-url]: https://github.com/vmindtech/vke-agent/blob/main/LICENSE
