@@ -52,7 +52,7 @@ Follow these steps to build and run the project:
     ```
    You can use the above command to create the master node. For worker nodes, you can use the following commands:
       ```bash
-    ./vke-agent -agentialize=false -rke2AgentType="agent" -rke2Token="your-token" -serverAddress="https://your-adress:9345" -kubeversion="v1.28.2+rke2r1"  -tlsSan="your-loadbalancer-adress"
+    ./vke-agent -initialize=false -rke2AgentType="agent" -rke2Token="your-token" -serverAddress="https://your-adress:9345" -kubeversion="v1.28.2+rke2r1"  -tlsSan="your-loadbalancer-adress"
 
     ```
 
