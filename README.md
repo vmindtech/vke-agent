@@ -1,6 +1,24 @@
-# vke-agent
+<a name="readme-top"></a>
 
-`vke-agent` is a simple command-line tool used for setting up Kubernetes clusters. With this tool, you can quickly provision both master and worker nodes.
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+
+
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+
+  <h3 align="center">VKE-AGENT</h3>
+
+  <p align="center">
+    Simple command line tool for setting up Kubernetes clusters. With this tool you can quickly provision both master and worker nodes.
+    <br />
+  </p>
+</div>
 
 ## Getting Started
 
@@ -30,14 +48,27 @@ Follow these steps to build and run the project:
     ```
 3. Use the vke-agent command to create Kubernetes nodes:
    ```bash
-    ./vke-init -initialize=true -rke2AgentType="server" -rke2Token="tiNI9s62On77H05Y6vsWtVkcZW7el7TfU2z=gwRJt" -serverAddress="LB-ADDRESS" -kubeversion="v1.28.2+rke2r1"  -tlsSan="LB-ADDRESS"
+    ./vke-agent -initialize=true -rke2AgentType="server" -rke2Token="tiNI9s62On77H05Y6vsWtVkcZW7el7TfU2z=gwRJt" -serverAddress="LB-ADDRESS" -kubeversion="v1.28.2+rke2r1"  -tlsSan="LB-ADDRESS"
     ```
    You can use the above command to create the master node. For worker nodes, you can use the following commands:
       ```bash
-    ./vke-agent -agentialize=false -rke2AgentType="agent" -rke2Token="your-token" -serverAddress="https://your-adress:9345" -kubeversion="v1.28.2+rke2r1"  -tlsSan="your-loadbalancer-adress"
+    ./vke-agent -initialize=false -rke2AgentType="agent" -rke2Token="your-token" -serverAddress="https://your-adress:9345" -kubeversion="v1.28.2+rke2r1"  -tlsSan="your-loadbalancer-adress"
 
     ```
 
-# License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+<!-- LICENSE -->
+## License
 
+Distributed under the APACHE-2.0 License. See `LICENSE` for more information.
+
+
+[contributors-shield]: https://img.shields.io/github/contributors/vmindtech/vke-agent?style=for-the-badge
+[contributors-url]: https://github.com/vmindtech/vke-agent/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/vmindtech/vke-agent?style=for-the-badge
+[forks-url]: https://github.com/vmindtech/vke-agent/network/members
+[stars-shield]: https://img.shields.io/github/stars/vmindtech/vke-agent?style=for-the-badge
+[stars-url]: https://github.com/vmindtech/vke-agent/stargazers
+[issues-shield]: https://img.shields.io/github/issues/vmindtech/vke-agent?style=for-the-badge
+[issues-url]: https://github.com/vmindtech/vke-agent/issues
+[license-shield]: https://img.shields.io/github/license/vmindtech/vke-agent?style=for-the-badge
+[license-url]: https://github.com/vmindtech/vke-agent/blob/main/LICENSE
