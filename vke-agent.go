@@ -50,7 +50,7 @@ func rke2Install(version string, rke2AgentType string) error {
 	return rke2InstallCommand.Run()
 }
 
-func rke2ServiceStart(rke2AgentType string) error {
+func rke2ServiceStart(rke2AgentType string, rke2Token string) error {
 	fmt.Println(InfoColor, "RKE2 started...")
 	if rke2AgentType == "agent" {
 		rke2ServiceStartCommand := exec.Command("sudo", "systemctl", "start", "rke2-agent")
@@ -58,7 +58,8 @@ func rke2ServiceStart(rke2AgentType string) error {
 		rke2ServiceStartCommand.Stderr = os.Stderr
 		return rke2ServiceStartCommand.Run()
 	} else {
-		rke2ServiceStartCommand := exec.Command("sudo", "systemctl", "start", "rke2-server")
+		startCommand := "sudo systemctl set-environment RKE2_TOKEN=" + rke2Token + " && sudo systemctl start rke2-server"
+		rke2ServiceStartCommand := exec.Command("sh", "-c", startCommand)
 		rke2ServiceStartCommand.Stdout = os.Stdout
 		rke2ServiceStartCommand.Stderr = os.Stderr
 		return rke2ServiceStartCommand.Run()
@@ -140,7 +141,7 @@ func main() {
 		fmt.Println(ErrorColor, "Service enabled error:", err)
 		return
 	}
-	if err := rke2ServiceStart(*rke2AgentType); err != nil {
+	if err := rke2ServiceStart(*rke2AgentType, *rke2Token); err != nil {
 		fmt.Println(ErrorColor, "Service initialization error:", err)
 		return
 	}
