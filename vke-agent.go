@@ -98,7 +98,7 @@ func rke2Config(initialize bool, serverAddress string, rke2AgentType string, rke
 }
 
 func pushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, ClusterUUID, VKEAPIEndpoint, VKEAPIAuthToken string) error {
-	_, err := os.Stat("./rke2-demo.yaml")
+	_, err := os.Stat("/etc/rancher/rke2/rke2.yaml")
 	if os.IsNotExist(err) {
 		fmt.Println("RKE2 config file not found")
 		return fmt.Errorf("RKE2 config file not found")
@@ -110,7 +110,7 @@ func pushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, 
 	}
 
 	fmt.Println("RKE2 config pushing...")
-	data, err := os.ReadFile("./rke2-demo.yaml")
+	data, err := os.ReadFile("/etc/rancher/rke2/rke2.yaml")
 	if err != nil {
 		fmt.Println("Config reading error:", err)
 		return err
