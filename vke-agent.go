@@ -1,11 +1,17 @@
 package main
 
 import (
+	"bytes"
+	"encoding/base64"
+	"encoding/json"
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"os/exec"
 	"text/template"
+
+	yaml "gopkg.in/yaml.v2"
 )
 
 const (
@@ -107,41 +113,132 @@ func rke2Config(initialize bool, serverAddress string, rke2AgentType string, rke
 	return err
 }
 
+func pushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, ClusterUUID, VKEAPIEndpoint, VKEAPIAuthToken string) error {
+	_, err := os.Stat("./rke2-demo.yaml")
+	if os.IsNotExist(err) {
+		fmt.Println(ErrorColor, "RKE2 config file not found")
+		return fmt.Errorf("RKE2 config file not found")
+	}
+
+	if !initialize && rke2AgentType != "server" && serverAddress == "" && clusterName == "" && ClusterUUID == "" && VKEAPIEndpoint == "" && VKEAPIAuthToken == "" {
+		fmt.Printf(ErrorColor, "RKE2 config insufficient parameters")
+		return fmt.Errorf("RKE2 config insufficient parameters")
+	}
+
+	fmt.Println(InfoColor, "RKE2 config pushing...")
+	data, err := os.ReadFile("./rke2-demo.yaml")
+	if err != nil {
+		fmt.Println(ErrorColor, "Config reading error:", err)
+		return err
+	}
+
+	var kubeconfig KubeConfig
+	err = yaml.Unmarshal(data, &kubeconfig)
+	if err != nil {
+		fmt.Println(ErrorColor, "Config unmarshal error:", err)
+		return err
+	}
+
+	fmt.Println(kubeconfig.Clusters[0].CertificateAuthorityData)
+
+	kubeconfig.Clusters[0].Server = fmt.Sprintf("https://%s:6443", serverAddress)
+	kubeconfig.Clusters[0].Name = clusterName
+
+	kubeconfig.Contexts[0].Cluster = clusterName
+	kubeconfig.Contexts[0].User = clusterName
+	kubeconfig.Contexts[0].Name = clusterName
+	kubeconfig.CurrentContext = clusterName
+
+	kubeconfig.Users[0].Name = clusterName
+
+	newKubeConfigYaml, err := yaml.Marshal(&kubeconfig)
+	if err != nil {
+		fmt.Println(ErrorColor, "Config marshal error:", err)
+		return err
+	}
+
+	kubeConfigBase64 := base64.StdEncoding.EncodeToString(newKubeConfigYaml)
+
+	sendKubeConfigRequest := SendKubeConfigRequest{
+		ClusterID:  ClusterUUID,
+		KubeConfig: kubeConfigBase64,
+	}
+
+	kubeConfigData, err := json.Marshal(sendKubeConfigRequest)
+	if err != nil {
+		fmt.Println(ErrorColor, "KubeConfig json marshal error:", err)
+		return err
+	}
+
+	r, err := http.NewRequest("POST", fmt.Sprintf("%s/kubeconfig", VKEAPIEndpoint), bytes.NewBuffer(kubeConfigData))
+	if err != nil {
+		fmt.Println(ErrorColor, "KubeConfig request error:", err)
+		return err
+	}
+
+	r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("X-Auth-Token", VKEAPIAuthToken)
+
+	client := &http.Client{}
+	resp, err := client.Do(r)
+	if err != nil {
+		fmt.Println(ErrorColor, "KubeConfig response error:", err)
+		return err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		fmt.Println(ErrorColor, "KubeConfig response status code error:", resp.StatusCode)
+		return err
+	}
+
+	return nil
+}
+
 func main() {
 	serverAddress := flag.String("serverAddress", "", "Server Address")
-	kubeversion := flag.String("kubeversion", "", "Kube Version")
-	tlsSan := flag.String("tlsSan", "", "TLS San")
+	// kubeversion := flag.String("kubeversion", "", "Kube Version")
+	// tlsSan := flag.String("tlsSan", "", "TLS San")
 	initialize := flag.Bool("initialize", false, "Initialize")
-	rke2Token := flag.String("rke2Token", "", "RKE2 Token")
+	// rke2Token := flag.String("rke2Token", "", "RKE2 Token")
 	rke2AgentType := flag.String("rke2AgentType", "", "Type")
+	rke2ClusterName := flag.String("rke2ClusterName", "", "Cluster Name")
+	rke2ClusterUUID := flag.String("rke2ClusterUUID", "", "Cluster UUID")
+	rke2AgentVKEAPIEndpoint := flag.String("rke2AgentVKEAPIEndpoint", "", "VKE API Endpoint")
+	rke2AgentVKEAPIAuthToken := flag.String("rke2AgentVKEAPIAuthToken", "", "VKE API Auth Token")
 
 	flag.Parse()
 
-	if err := updateSystem(); err != nil {
-		fmt.Println(ErrorColor, "System update error:", err)
-		return
-	}
+	// if err := updateSystem(); err != nil {
+	// 	fmt.Println(ErrorColor, "System update error:", err)
+	// 	return
+	// }
 
-	if err := createDirectory("/etc/rancher/rke2"); err != nil {
-		fmt.Println(ErrorColor, "Indexing error:", err)
-		return
-	}
-	if err := rke2Config(*initialize, *serverAddress, *rke2AgentType, *rke2Token, *tlsSan); err != nil {
-		fmt.Println(ErrorColor, "Config creation error:", err)
-		return
-	}
+	// if err := createDirectory("/etc/rancher/rke2"); err != nil {
+	// 	fmt.Println(ErrorColor, "Indexing error:", err)
+	// 	return
+	// }
+	// if err := rke2Config(*initialize, *serverAddress, *rke2AgentType, *rke2Token, *tlsSan); err != nil {
+	// 	fmt.Println(ErrorColor, "Config creation error:", err)
+	// 	return
+	// }
 
-	if err := rke2Install(*kubeversion, *rke2AgentType); err != nil {
-		fmt.Println(ErrorColor, "RKE2 installation error:", err)
-		return
-	}
+	// if err := rke2Install(*kubeversion, *rke2AgentType); err != nil {
+	// 	fmt.Println(ErrorColor, "RKE2 installation error:", err)
+	// 	return
+	// }
 
-	if err := rke2ServiceEnable(*rke2AgentType); err != nil {
-		fmt.Println(ErrorColor, "Service enabled error:", err)
-		return
-	}
-	if err := rke2ServiceStart(*rke2AgentType); err != nil {
-		fmt.Println(ErrorColor, "Service initialization error:", err)
+	// if err := rke2ServiceEnable(*rke2AgentType); err != nil {
+	// 	fmt.Println(ErrorColor, "Service enabled error:", err)
+	// 	return
+	// }
+	// if err := rke2ServiceStart(*rke2AgentType); err != nil {
+	// 	fmt.Println(ErrorColor, "Service initialization error:", err)
+	// 	return
+	// }
+	if err := pushRKE2Config(*initialize, *rke2AgentType, *serverAddress, *rke2ClusterName, *rke2ClusterUUID, *rke2AgentVKEAPIEndpoint, *rke2AgentVKEAPIAuthToken); err != nil {
+		fmt.Println(ErrorColor, "Pushing RKE2 config error:", err)
 		return
 	}
 
