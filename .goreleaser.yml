@@ -1,9 +1,9 @@
 before:
   hooks:
     - go mod download
+    - go mod tidy
 builds:
-  - main: vke-agent.go
-    goos:
+  - goos:
       - linux
     goarch:
       - amd64
