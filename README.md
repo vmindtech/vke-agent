@@ -44,16 +44,15 @@ Follow these steps to build and run the project:
 
 2. Build the project
    ```bash
-    env GOOS=linux GOARCH=amd64 go build vke-agent.go
+    env GOOS=linux GOARCH=amd64 go build .
     ```
 3. Use the vke-agent command to create Kubernetes nodes:
    ```bash
-    ./vke-agent -initialize=true -rke2AgentType="server" -rke2Token="tiNI9s62On77H05Y6vsWtVkcZW7el7TfU2z=gwRJt" -serverAddress="LB-ADDRESS" -kubeversion="v1.28.2+rke2r1"  -tlsSan="LB-ADDRESS"
+    ./vke-agent -initialize=true -rke2AgentType="server" -rke2Token="your-token" -serverAddress="LB-ADDRESS" -kubeversion="v1.28.2+rke2r1"  -tlsSan="LB-ADDRESS" -rke2ClusterName="your-cluster-name" -rke2ClusterUUID="your-cluster-uuıd" -rke2AgentVKEAPIEndpoint="vke-endpoint" -rke2AgentVKEAPIAuthToken="openstack-auth-token"
     ```
    You can use the above command to create the master node. For worker nodes, you can use the following commands:
       ```bash
-    ./vke-agent -initialize=false -rke2AgentType="agent" -rke2Token="your-token" -serverAddress="your-loadbalancer-adress" -kubeversion="v1.28.2+rke2r1"  -tlsSan="your-loadbalancer-adress"
-
+    ./vke-agent -initialize=false -rke2AgentType="agent" -rke2Token="your-token" -serverAddress="your-loadbalancer-adress" -kubeversion="v1.28.2+rke2r1"  -tlsSan="your-loadbalancer-adress" -rke2ClusterName="your-cluster-name" -rke2ClusterUUID="your-cluster-uuıd" -rke2AgentVKEAPIEndpoint="vke-endpoint" -rke2AgentVKEAPIAuthToken="openstack-auth-token"
     ```
 
 <!-- LICENSE -->
