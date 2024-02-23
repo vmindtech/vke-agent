@@ -8,5 +8,4 @@ node-name: {{ .NodeName }}
   - "CriticalAddonsOnly=true:NoExecute"
 {{ else }}{{ end }}
 {{ end }}
-disable:
-  - rke2-cloud-controller-manager
+disable-cloud-controller: true
