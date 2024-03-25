@@ -9,7 +9,7 @@ import (
 	"github.com/vmindtech/vke-agent/models"
 )
 
-func rke2Install(version string, rke2AgentType string) error {
+func RKE2Install(version string, rke2AgentType string) error {
 	fmt.Println("RKE2 Install...")
 	curlCommand := "curl -sfL https://get.rke2.io | INSTALL_RKE2_VERSION=" + version + " INSTALL_RKE2_TYPE=" + rke2AgentType + " sh -"
 	rke2InstallCommand := exec.Command("sh", "-c", curlCommand)
@@ -18,7 +18,22 @@ func rke2Install(version string, rke2AgentType string) error {
 	return rke2InstallCommand.Run()
 }
 
-func rke2ServiceStart(rke2AgentType string) error {
+func RKE2ServiceEnable(rke2AgentType string) error {
+	fmt.Println("RKE2 Enabled...")
+	if rke2AgentType == "agent" {
+		rke2ServiceEnableCommand := exec.Command("sudo", "systemctl", "enable", "rke2-agent")
+		rke2ServiceEnableCommand.Stdout = os.Stdout
+		rke2ServiceEnableCommand.Stderr = os.Stderr
+		return rke2ServiceEnableCommand.Run()
+	} else {
+		rke2ServiceEnableCommand := exec.Command("sudo", "systemctl", "enable", "rke2-server")
+		rke2ServiceEnableCommand.Stdout = os.Stdout
+		rke2ServiceEnableCommand.Stderr = os.Stderr
+		return rke2ServiceEnableCommand.Run()
+	}
+}
+
+func RKE2ServiceStart(rke2AgentType string) error {
 	fmt.Println("RKE2 started...")
 	if rke2AgentType == "agent" {
 		rke2ServiceStartCommand := exec.Command("sudo", "systemctl", "start", "rke2-agent")
@@ -33,7 +48,7 @@ func rke2ServiceStart(rke2AgentType string) error {
 	}
 }
 
-func rke2Config(initialize bool, serverAddress string, rke2AgentType string, rke2Token string, TlsSan string) error {
+func RKE2Config(initialize bool, serverAddress string, rke2AgentType string, rke2Token string, TlsSan string) error {
 	fmt.Println("RKE2 config creating...")
 	hostname, err := os.Hostname()
 	if err != nil {

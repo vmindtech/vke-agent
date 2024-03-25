@@ -13,7 +13,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func pushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, ClusterUUID, VKEAPIEndpoint, VKEAPIAuthToken string) error {
+func PushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, ClusterUUID, VKEAPIEndpoint, VKEAPIAuthToken string) error {
 	_, err := os.Stat("/etc/rancher/rke2/rke2.yaml")
 	if os.IsNotExist(err) {
 		fmt.Println("RKE2 config file not found")

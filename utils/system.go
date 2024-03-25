@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-func updateSystem() error {
+func UpdateSystem() error {
 	fmt.Println("System is updating...")
 	updateCommand := exec.Command("sudo", "apt", "update", "-y")
 	updateCommand.Stdout = os.Stdout
@@ -18,7 +18,7 @@ func updateSystem() error {
 	return nil
 }
 
-func createDirectory(path string) error {
+func CreateDirectory(path string) error {
 	fmt.Printf("Creates directory...")
 	mkdirCommand := exec.Command("sudo", "mkdir", "-p", path)
 	mkdirCommand.Stdout = os.Stdout

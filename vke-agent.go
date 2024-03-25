@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+
+	"github.com/vmindtech/vke-agent/utils"
 )
 
 func main() {
@@ -19,34 +21,34 @@ func main() {
 
 	flag.Parse()
 
-	if err := utils.updateSystem(); err != nil {
+	if err := utils.UpdateSystem(); err != nil {
 		fmt.Println("System update error:", err)
 		return
 	}
 
-	if err := utils.createDirectory("/etc/rancher/rke2"); err != nil {
+	if err := utils.CreateDirectory("/etc/rancher/rke2"); err != nil {
 		fmt.Println("Indexing error:", err)
 		return
 	}
-	if err := utils.rke2Config(*initialize, *serverAddress, *rke2AgentType, *rke2Token, *tlsSan); err != nil {
+	if err := utils.RKE2Config(*initialize, *serverAddress, *rke2AgentType, *rke2Token, *tlsSan); err != nil {
 		fmt.Println("Config creation error:", err)
 		return
 	}
 
-	if err := utils.rke2Install(*kubeversion, *rke2AgentType); err != nil {
+	if err := utils.RKE2Install(*kubeversion, *rke2AgentType); err != nil {
 		fmt.Println("RKE2 installation error:", err)
 		return
 	}
 
-	if err := utils.rke2ServiceEnable(*rke2AgentType); err != nil {
+	if err := utils.RKE2ServiceEnable(*rke2AgentType); err != nil {
 		fmt.Println("Service enabled error:", err)
 		return
 	}
-	if err := utils.rke2ServiceStart(*rke2AgentType); err != nil {
+	if err := utils.RKE2ServiceStart(*rke2AgentType); err != nil {
 		fmt.Println("Service initialization error:", err)
 		return
 	}
-	if err := utils.pushRKE2Config(*initialize, *rke2AgentType, *serverAddress, *rke2ClusterName, *rke2ClusterUUID, *rke2AgentVKEAPIEndpoint, *rke2AgentVKEAPIAuthToken); err != nil {
+	if err := utils.PushRKE2Config(*initialize, *rke2AgentType, *serverAddress, *rke2ClusterName, *rke2ClusterUUID, *rke2AgentVKEAPIEndpoint, *rke2AgentVKEAPIAuthToken); err != nil {
 		fmt.Println("Pushing RKE2 config error:", err)
 		return
 	}
