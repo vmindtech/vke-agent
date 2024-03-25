@@ -1,4 +1,4 @@
-package main
+package request
 
 type SendKubeConfigRequest struct {
 	ClusterID  string `json:"clusterId"`
