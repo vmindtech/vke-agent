@@ -52,6 +52,7 @@ With this tool, you can quickly provision both master and worker nodes.`,
 			log.Error("Service initialization error:", err)
 			return
 		}
+		fmt.Printf(config.Initialize, config.RKE2AgentType, config.ServerAddress, config.RKE2ClusterName, config.RKE2ClusterUUID, config.RKE2AgentVKEAPIEndpoint, config.RKE2AgentVKEAPIAuthToken)
 		if config.Initialize == true {
 			err := utils.PushRKE2Config(config.Initialize, config.RKE2AgentType, config.ServerAddress, config.RKE2ClusterName, config.RKE2ClusterUUID, config.RKE2AgentVKEAPIEndpoint, config.RKE2AgentVKEAPIAuthToken)
 			if err != nil {
