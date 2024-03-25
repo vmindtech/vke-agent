@@ -64,7 +64,7 @@ func RKE2Config(initialize bool, serverAddress string, rke2AgentType string, rke
 		},
 	}
 
-	var yamlFile = "./templates/config.yaml"
+	var yamlFile = "/templates/config.yaml"
 	yaml, err := template.New(yamlFile).ParseFiles(yamlFile)
 	if err != nil {
 		logrus.Error("Error parsing YAML file:", err)
