@@ -8,4 +8,5 @@ node-name: {{ .NodeName }}
   - "CriticalAddonsOnly=true:NoExecute"
 {{ else }}{{ end }}
 {{ end }}
+cloud-provider-name: external
 disable-cloud-controller: true
