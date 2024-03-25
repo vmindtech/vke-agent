@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/sirupsen/logrus"
 	"github.com/vmindtech/vke-agent/models"
@@ -63,8 +64,16 @@ func RKE2Config(initialize bool, serverAddress string, rke2AgentType string, rke
 			Rke2AgentType: rke2AgentType,
 		},
 	}
+	executablePath, err := os.Executable()
+	if err != nil {
+		logrus.Error("Error getting executable path:", err)
+		return err
+	}
 
-	var yamlFile = "/templates/config.yaml"
+	// Çalıştırılabilir dosyanın bulunduğu dizini elde ederiz
+	executableDir := filepath.Dir(executablePath)
+	filePath := filepath.Join(executableDir, "templates/config.yaml")
+	var yamlFile = filePath
 	yaml, err := template.New(yamlFile).ParseFiles(yamlFile)
 	if err != nil {
 		logrus.Error("Error parsing YAML file:", err)
