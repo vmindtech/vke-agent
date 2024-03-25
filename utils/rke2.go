@@ -70,7 +70,6 @@ func RKE2Config(initialize bool, serverAddress string, rke2AgentType string, rke
 		return err
 	}
 
-	// Çalıştırılabilir dosyanın bulunduğu dizini elde ederiz
 	executableDir := filepath.Dir(executablePath)
 	filePath := filepath.Join(executableDir, "templates/config.yaml")
 	var yamlFile = filePath
