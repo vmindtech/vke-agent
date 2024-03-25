@@ -1,57 +1,85 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"os"
 
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
+	"github.com/vmindtech/vke-agent/models"
 	"github.com/vmindtech/vke-agent/utils"
 )
 
+var log = logrus.New()
+
+var rootCmd = &cobra.Command{
+	Use:   "vke-agent",
+	Short: "Simple command line tool for setting up Kubernetes clusters.",
+	Long: `vke-agent is a simple command line tool for setting up Kubernetes clusters.
+With this tool, you can quickly provision both master and worker nodes.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		var config models.Config
+
+		if err := cmd.Flags().Parse(args); err != nil {
+			log.Error("Parsing flags error:", err)
+			return
+		}
+
+		if err := utils.UpdateSystem(); err != nil {
+			log.Error("System update error:", err)
+			return
+		}
+
+		if err := utils.CreateDirectory("/etc/rancher/rke2"); err != nil {
+			log.Error("Indexing error:", err)
+			return
+		}
+		if err := utils.RKE2Config(config.Initialize, config.ServerAddress, config.RKE2AgentType, config.RKE2Token, config.TLSSan); err != nil {
+			log.Error("Config creation error:", err)
+			return
+		}
+
+		if err := utils.RKE2Install(config.Kubeversion, config.RKE2AgentType); err != nil {
+			log.Error("RKE2 installation error:", err)
+			return
+		}
+
+		if err := utils.RKE2ServiceEnable(config.RKE2AgentType); err != nil {
+			log.Error("Service enabled error:", err)
+			return
+		}
+		if err := utils.RKE2ServiceStart(config.RKE2AgentType); err != nil {
+			log.Error("Service initialization error:", err)
+			return
+		}
+		if err := utils.PushRKE2Config(config.Initialize, config.RKE2AgentType, config.ServerAddress, config.RKE2ClusterName, config.RKE2ClusterUUID, config.RKE2AgentVKEAPIEndpoint, config.RKE2AgentVKEAPIAuthToken); err != nil {
+			log.Error("Pushing RKE2 config error:", err)
+			return
+		}
+
+		log.Info("Process completed.")
+	},
+}
+
+func init() {
+	var config models.Config
+	rootCmd.PersistentFlags().StringVar(&config.ServerAddress, "serverAddress", "", "Server Address (required)")
+	rootCmd.PersistentFlags().StringVar(&config.Kubeversion, "kubeversion", "", "Kube Version (required)")
+	rootCmd.PersistentFlags().StringVar(&config.TLSSan, "tlsSan", "", "TLS San (required)")
+	rootCmd.PersistentFlags().BoolVar(&config.Initialize, "initialize", false, "Initialize (required)")
+	rootCmd.PersistentFlags().StringVar(&config.RKE2Token, "rke2Token", "", "RKE2 Token (required)")
+	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentType, "rke2AgentType", "", "Type (required)")
+	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterName, "rke2ClusterName", "", "Cluster Name (required)")
+	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterUUID, "rke2ClusterUUID", "", "Cluster UUID (required)")
+	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentVKEAPIEndpoint, "rke2AgentVKEAPIEndpoint", "", "VKE API Endpoint (required)")
+	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentVKEAPIAuthToken, "rke2AgentVKEAPIAuthToken", "", "VKE API Auth Token (required)")
+
+	rootCmd.SetHelpCommand(&cobra.Command{Use: "no-help-flag"})
+}
+
 func main() {
-	serverAddress := flag.String("serverAddress", "", "Server Address")
-	kubeversion := flag.String("kubeversion", "", "Kube Version")
-	tlsSan := flag.String("tlsSan", "", "TLS San")
-	initialize := flag.Bool("initialize", false, "Initialize")
-	rke2Token := flag.String("rke2Token", "", "RKE2 Token")
-	rke2AgentType := flag.String("rke2AgentType", "", "Type")
-	rke2ClusterName := flag.String("rke2ClusterName", "", "Cluster Name")
-	rke2ClusterUUID := flag.String("rke2ClusterUUID", "", "Cluster UUID")
-	rke2AgentVKEAPIEndpoint := flag.String("rke2AgentVKEAPIEndpoint", "", "VKE API Endpoint")
-	rke2AgentVKEAPIAuthToken := flag.String("rke2AgentVKEAPIAuthToken", "", "VKE API Auth Token")
-
-	flag.Parse()
-
-	if err := utils.UpdateSystem(); err != nil {
-		fmt.Println("System update error:", err)
-		return
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
-
-	if err := utils.CreateDirectory("/etc/rancher/rke2"); err != nil {
-		fmt.Println("Indexing error:", err)
-		return
-	}
-	if err := utils.RKE2Config(*initialize, *serverAddress, *rke2AgentType, *rke2Token, *tlsSan); err != nil {
-		fmt.Println("Config creation error:", err)
-		return
-	}
-
-	if err := utils.RKE2Install(*kubeversion, *rke2AgentType); err != nil {
-		fmt.Println("RKE2 installation error:", err)
-		return
-	}
-
-	if err := utils.RKE2ServiceEnable(*rke2AgentType); err != nil {
-		fmt.Println("Service enabled error:", err)
-		return
-	}
-	if err := utils.RKE2ServiceStart(*rke2AgentType); err != nil {
-		fmt.Println("Service initialization error:", err)
-		return
-	}
-	if err := utils.PushRKE2Config(*initialize, *rke2AgentType, *serverAddress, *rke2ClusterName, *rke2ClusterUUID, *rke2AgentVKEAPIEndpoint, *rke2AgentVKEAPIAuthToken); err != nil {
-		fmt.Println("Pushing RKE2 config error:", err)
-		return
-	}
-
-	fmt.Println("Process completed.")
 }
