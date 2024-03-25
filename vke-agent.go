@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -52,8 +53,8 @@ With this tool, you can quickly provision both master and worker nodes.`,
 			log.Error("Service initialization error:", err)
 			return
 		}
-		fmt.Printf(config.Initialize, config.RKE2AgentType, config.ServerAddress, config.RKE2ClusterName, config.RKE2ClusterUUID, config.RKE2AgentVKEAPIEndpoint, config.RKE2AgentVKEAPIAuthToken)
-		if config.Initialize == true {
+		fmt.Printf(strconv.FormatBool(config.Initialize), config.RKE2AgentType, config.ServerAddress, config.RKE2ClusterName, config.RKE2ClusterUUID, config.RKE2AgentVKEAPIEndpoint, config.RKE2AgentVKEAPIAuthToken)
+		if config.Initialize {
 			err := utils.PushRKE2Config(config.Initialize, config.RKE2AgentType, config.ServerAddress, config.RKE2ClusterName, config.RKE2ClusterUUID, config.RKE2AgentVKEAPIEndpoint, config.RKE2AgentVKEAPIAuthToken)
 			if err != nil {
 				log.Error("RKE2 config push error:", err)
@@ -62,9 +63,7 @@ With this tool, you can quickly provision both master and worker nodes.`,
 			log.Info("RKE2 config pushed.")
 		} else {
 			log.Info("RKE2 config not pushed.")
-
 		}
-
 		log.Info("Process completed.")
 	},
 }
