@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -12,6 +11,7 @@ import (
 )
 
 var log = logrus.New()
+var config models.Config
 
 var rootCmd = &cobra.Command{
 	Use:   "vke-agent",
@@ -19,7 +19,6 @@ var rootCmd = &cobra.Command{
 	Long: `vke-agent is a simple command line tool for setting up Kubernetes clusters.
 With this tool, you can quickly provision both master and worker nodes.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var config models.Config
 
 		if err := cmd.Flags().Parse(args); err != nil {
 			log.Error("Parsing flags error:", err)
@@ -53,7 +52,7 @@ With this tool, you can quickly provision both master and worker nodes.`,
 			log.Error("Service initialization error:", err)
 			return
 		}
-		fmt.Printf(strconv.FormatBool(config.Initialize), config.RKE2AgentType, config.ServerAddress, config.RKE2ClusterName, config.RKE2ClusterUUID, config.RKE2AgentVKEAPIEndpoint, config.RKE2AgentVKEAPIAuthToken)
+		fmt.Printf("Initialize: %t\n", config.Initialize)
 		if config.Initialize {
 			err := utils.PushRKE2Config(config.Initialize, config.RKE2AgentType, config.ServerAddress, config.RKE2ClusterName, config.RKE2ClusterUUID, config.RKE2AgentVKEAPIEndpoint, config.RKE2AgentVKEAPIAuthToken)
 			if err != nil {
@@ -69,7 +68,6 @@ With this tool, you can quickly provision both master and worker nodes.`,
 }
 
 func init() {
-	var config models.Config
 	rootCmd.PersistentFlags().StringVar(&config.ServerAddress, "serverAddress", "", "Server Address (required)")
 	rootCmd.PersistentFlags().StringVar(&config.Kubeversion, "kubeversion", "", "Kube Version (required)")
 	rootCmd.PersistentFlags().StringVar(&config.TLSSan, "tlsSan", "", "TLS San (required)")
