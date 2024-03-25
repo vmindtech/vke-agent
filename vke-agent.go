@@ -10,7 +10,6 @@ import (
 	"github.com/vmindtech/vke-agent/utils"
 )
 
-var log = logrus.New()
 var config models.Config
 
 var rootCmd = &cobra.Command{
@@ -21,49 +20,49 @@ With this tool, you can quickly provision both master and worker nodes.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if err := cmd.Flags().Parse(args); err != nil {
-			log.Error("Parsing flags error:", err)
+			logrus.Error("Parsing flags error:", err)
 			return
 		}
 
 		if err := utils.UpdateSystem(); err != nil {
-			log.Error("System update error:", err)
+			logrus.Error("System update error:", err)
 			return
 		}
 
 		if err := utils.CreateDirectory("/etc/rancher/rke2"); err != nil {
-			log.Error("Indexing error:", err)
+			logrus.Error("Indexing error:", err)
 			return
 		}
 		if err := utils.RKE2Config(config.Initialize, config.ServerAddress, config.RKE2AgentType, config.RKE2Token, config.TLSSan); err != nil {
-			log.Error("Config creation error:", err)
+			logrus.Error("Config creation error:", err)
 			return
 		}
 
 		if err := utils.RKE2Install(config.Kubeversion, config.RKE2AgentType); err != nil {
-			log.Error("RKE2 installation error:", err)
+			logrus.Error("RKE2 installation error:", err)
 			return
 		}
 
 		if err := utils.RKE2ServiceEnable(config.RKE2AgentType); err != nil {
-			log.Error("Service enabled error:", err)
+			logrus.Error("Service enabled error:", err)
 			return
 		}
 		if err := utils.RKE2ServiceStart(config.RKE2AgentType); err != nil {
-			log.Error("Service initialization error:", err)
+			logrus.Error("Service initialization error:", err)
 			return
 		}
 		fmt.Printf("Initialize: %t\n", config.Initialize)
 		if config.Initialize {
 			err := utils.PushRKE2Config(config.Initialize, config.RKE2AgentType, config.ServerAddress, config.RKE2ClusterName, config.RKE2ClusterUUID, config.RKE2AgentVKEAPIEndpoint, config.RKE2AgentVKEAPIAuthToken)
 			if err != nil {
-				log.Error("RKE2 config push error:", err)
+				logrus.Error("RKE2 config push error:", err)
 				return
 			}
-			log.Info("RKE2 config pushed.")
+			logrus.Info("RKE2 config pushed.")
 		} else {
-			log.Info("RKE2 config not pushed.")
+			logrus.Info("RKE2 config not pushed.")
 		}
-		log.Info("Process completed.")
+		logrus.Info("Process completed.")
 	},
 }
 

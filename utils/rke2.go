@@ -1,16 +1,16 @@
 package utils
 
 import (
-	"fmt"
 	"html/template"
 	"os"
 	"os/exec"
 
+	"github.com/sirupsen/logrus"
 	"github.com/vmindtech/vke-agent/models"
 )
 
 func RKE2Install(version string, rke2AgentType string) error {
-	fmt.Println("RKE2 Install...")
+	logrus.Info("RKE2 Install...")
 	curlCommand := "curl -sfL https://get.rke2.io | INSTALL_RKE2_VERSION=" + version + " INSTALL_RKE2_TYPE=" + rke2AgentType + " sh -"
 	rke2InstallCommand := exec.Command("sh", "-c", curlCommand)
 	rke2InstallCommand.Stdout = os.Stdout
@@ -19,42 +19,40 @@ func RKE2Install(version string, rke2AgentType string) error {
 }
 
 func RKE2ServiceEnable(rke2AgentType string) error {
-	fmt.Println("RKE2 Enabled...")
+	logrus.Info("RKE2 Enabled...")
+	serviceName := "rke2-server"
 	if rke2AgentType == "agent" {
-		rke2ServiceEnableCommand := exec.Command("sudo", "systemctl", "enable", "rke2-agent")
-		rke2ServiceEnableCommand.Stdout = os.Stdout
-		rke2ServiceEnableCommand.Stderr = os.Stderr
-		return rke2ServiceEnableCommand.Run()
-	} else {
-		rke2ServiceEnableCommand := exec.Command("sudo", "systemctl", "enable", "rke2-server")
-		rke2ServiceEnableCommand.Stdout = os.Stdout
-		rke2ServiceEnableCommand.Stderr = os.Stderr
-		return rke2ServiceEnableCommand.Run()
+		serviceName = "rke2-agent"
 	}
+
+	rke2ServiceEnableCommand := exec.Command("sudo", "systemctl", "enable", serviceName)
+	rke2ServiceEnableCommand.Stdout = os.Stdout
+	rke2ServiceEnableCommand.Stderr = os.Stderr
+	return rke2ServiceEnableCommand.Run()
 }
 
 func RKE2ServiceStart(rke2AgentType string) error {
-	fmt.Println("RKE2 started...")
+	logrus.Info("RKE2 started...")
+	serviceName := "rke2-server"
 	if rke2AgentType == "agent" {
-		rke2ServiceStartCommand := exec.Command("sudo", "systemctl", "start", "rke2-agent")
-		rke2ServiceStartCommand.Stdout = os.Stdout
-		rke2ServiceStartCommand.Stderr = os.Stderr
-		return rke2ServiceStartCommand.Run()
-	} else {
-		rke2ServiceStartCommand := exec.Command("sudo", "systemctl", "start", "rke2-server")
-		rke2ServiceStartCommand.Stdout = os.Stdout
-		rke2ServiceStartCommand.Stderr = os.Stderr
-		return rke2ServiceStartCommand.Run()
+		serviceName = "rke2-agent"
 	}
+
+	rke2ServiceStartCommand := exec.Command("sudo", "systemctl", "start", serviceName)
+	rke2ServiceStartCommand.Stdout = os.Stdout
+	rke2ServiceStartCommand.Stderr = os.Stderr
+	return rke2ServiceStartCommand.Run()
 }
 
 func RKE2Config(initialize bool, serverAddress string, rke2AgentType string, rke2Token string, TlsSan string) error {
-	fmt.Println("RKE2 config creating...")
+	logrus.Info("RKE2 config creating...")
+
 	hostname, err := os.Hostname()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		logrus.Error("Error getting hostname:", err)
+		return err
 	}
+
 	cluster := []models.InitMaster{
 		{
 			NodeName:      hostname,
@@ -65,14 +63,27 @@ func RKE2Config(initialize bool, serverAddress string, rke2AgentType string, rke
 			Rke2AgentType: rke2AgentType,
 		},
 	}
+
 	var yamlFile = "config.yaml"
 	yaml, err := template.New(yamlFile).ParseFiles(yamlFile)
-	f, err := os.Create("/etc/rancher/rke2/config.yaml")
 	if err != nil {
-		fmt.Println("Error creating config.yaml file:", err)
+		logrus.Error("Error parsing YAML file:", err)
 		return err
 	}
+
+	f, err := os.Create("/etc/rancher/rke2/config.yaml")
+	if err != nil {
+		logrus.Error("Error creating config.yaml file:", err)
+		return err
+	}
+	defer f.Close()
+
 	err = yaml.Execute(f, cluster)
-	f.Close()
-	return err
+	if err != nil {
+		logrus.Error("Error executing YAML template:", err)
+		return err
+	}
+
+	logrus.Info("RKE2 config created.")
+	return nil
 }
