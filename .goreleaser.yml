@@ -20,4 +20,4 @@ archives:
     vke-agent_{{.Tag}}_{{.Os}}_{{.Arch}}
   builds:
     - vke-agent
-  files: ["LICENSE","templates/config.yaml"]
+  files: ["LICENSE","config.yaml"]
