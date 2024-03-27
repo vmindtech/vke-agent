@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	"github.com/vmindtech/vke-agent/models"
@@ -45,7 +46,7 @@ func RKE2ServiceStart(rke2AgentType string) error {
 	return rke2ServiceStartCommand.Run()
 }
 
-func RKE2Config(initialize bool, serverAddress, rke2AgentType, rke2Token, TlsSan string, rke2NodeLabel []string) error {
+func RKE2Config(initialize bool, serverAddress, rke2AgentType, rke2Token, TlsSan, rke2NodeLabel string) error {
 	logrus.Info("RKE2 config creating...")
 
 	hostname, err := os.Hostname()
@@ -56,6 +57,8 @@ func RKE2Config(initialize bool, serverAddress, rke2AgentType, rke2Token, TlsSan
 
 	fmt.Println(rke2NodeLabel)
 
+	rke2NodeLabelsArr := strings.Split(rke2NodeLabel, ",")
+
 	cluster := []models.InitMaster{
 		{
 			NodeName:      hostname,
@@ -64,7 +67,7 @@ func RKE2Config(initialize bool, serverAddress, rke2AgentType, rke2Token, TlsSan
 			Initialize:    initialize,
 			ServerAddress: serverAddress,
 			Rke2AgentType: rke2AgentType,
-			Rke2NodeLabel: rke2NodeLabel,
+			Rke2NodeLabel: rke2NodeLabelsArr,
 		},
 	}
 

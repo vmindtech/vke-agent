@@ -72,7 +72,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&config.Initialize, "initialize", false, "Initialize (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2Token, "rke2Token", "", "RKE2 Token (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentType, "rke2AgentType", "", "Type (required)")
-	rootCmd.PersistentFlags().StringArrayVar(&config.RKE2NodeLabel, "rke2NodeLabel", []string{}, "Node Label (required)")
+	rootCmd.PersistentFlags().StringVar(&config.RKE2NodeLabel, "rke2NodeLabel", "", "Node Label (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterName, "rke2ClusterName", "", "Cluster Name (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterUUID, "rke2ClusterUUID", "", "Cluster UUID (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentVKEAPIEndpoint, "rke2AgentVKEAPIEndpoint", "", "VKE API Endpoint (required)")
