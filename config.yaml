@@ -1,0 +1,21 @@
+{{- range . }}
+token: {{ .Token }}
+tls-san:
+  - {{ .TlsSan }}
+node-name: {{ .NodeName }}
+{{- if not .Initialize }}
+server: https://{{.ServerAddress}}:9345
+{{- end }}
+{{- if eq .Rke2AgentType "server" }}
+node-taint:
+  - "CriticalAddonsOnly=true:NoExecute"
+{{- end }}
+{{- end }}
+{{- if and (eq .Rke2AgentType "agent") .Rke2NodeLabel }}
+node-label:
+  {{- range $item := .Rke2NodeLabel }}
+  - "{{ $item }}"
+  {{- end }}
+{{- end }}
+cloud-provider-name: external
+disable-cloud-controller: true

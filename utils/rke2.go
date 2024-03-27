@@ -54,6 +54,8 @@ func RKE2Config(initialize bool, serverAddress, rke2AgentType, rke2Token, TlsSan
 		return err
 	}
 
+	fmt.Println(rke2NodeLabel)
+
 	cluster := []models.InitMaster{
 		{
 			NodeName:      hostname,
@@ -66,7 +68,7 @@ func RKE2Config(initialize bool, serverAddress, rke2AgentType, rke2Token, TlsSan
 		},
 	}
 
-	var yamlFile = fmt.Sprintf("%s/templates/config.yaml", os.Getenv("PWD"))
+	var yamlFile = "config.yaml"
 	yaml, err := template.New(yamlFile).ParseFiles(yamlFile)
 	if err != nil {
 		logrus.Error("Error parsing YAML file:", err)
