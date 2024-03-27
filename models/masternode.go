@@ -7,4 +7,5 @@ type InitMaster struct {
 	Initialize    bool
 	ServerAddress string
 	Rke2AgentType string
+	Rke2NodeLabel []string
 }
