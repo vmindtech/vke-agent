@@ -33,7 +33,7 @@ With this tool, you can quickly provision both master and worker nodes.`,
 			logrus.Error("Indexing error:", err)
 			return
 		}
-		if err := utils.RKE2Config(config.Initialize, config.ServerAddress, config.RKE2AgentType, config.RKE2Token, config.TLSSan); err != nil {
+		if err := utils.RKE2Config(config.Initialize, config.ServerAddress, config.RKE2AgentType, config.RKE2Token, config.TLSSan, config.RKE2NodeLabel); err != nil {
 			logrus.Error("Config creation error:", err)
 			return
 		}
@@ -72,6 +72,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&config.Initialize, "initialize", false, "Initialize (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2Token, "rke2Token", "", "RKE2 Token (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentType, "rke2AgentType", "", "Type (required)")
+	rootCmd.PersistentFlags().StringVar(&config.RKE2NodeLabel, "rke2NodeLabel", "", "Node Label (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterName, "rke2ClusterName", "", "Cluster Name (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterUUID, "rke2ClusterUUID", "", "Cluster UUID (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentVKEAPIEndpoint, "rke2AgentVKEAPIEndpoint", "", "VKE API Endpoint (required)")

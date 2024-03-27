@@ -7,6 +7,11 @@ node-name: {{ .NodeName }}
 {{ if (eq .Rke2AgentType "server") }}node-taint:
   - "CriticalAddonsOnly=true:NoExecute"
 {{ else }}{{ end }}
+{{ if and (eq .Rke2AgentType "agent") .Rke2NodeLabel }}node-label:
+  {{- range $item := .Rke2NodeLabel }}
+  - {{ $item }}
+  {{- end }}
+{{ else }}{{ end }}
 {{ end }}
 cloud-provider-name: external
 disable-cloud-controller: true
