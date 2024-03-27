@@ -11,7 +11,9 @@ node-name: {{ .NodeName }}
 {{ if .Rke2AgentType }}
 {{ if (eq .Rke2AgentType "agent") and .Rke2NodeLabel }}
 node-label:
-{{ .Rke2NodeLabel | toYaml | indent 2 }}
+  {{- range $item := .Rke2NodeLabel }}
+  - "{{ $item }}"
+  {{- end }}
 {{ else }}{{ end }}
 cloud-provider-name: external
 disable-cloud-controller: true
