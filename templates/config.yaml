@@ -9,7 +9,7 @@ node-name: {{ .NodeName }}
 {{ else }}{{ end }}
 {{ end }}
 {{ if .Rke2AgentType }}
-{{ if (eq .Rke2AgentType "agent") && (nq .Rke2NodeLabel [])}}
+{{ if (eq .Rke2AgentType "agent") and (nq .Rke2NodeLabel [])}}
 node-label:
 {{ .Rke2NodeLabel | toYaml | indent 2 }}
 {{ else }}{{ end }}

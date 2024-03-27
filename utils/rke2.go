@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"html/template"
 	"os"
 	"os/exec"
@@ -65,7 +66,7 @@ func RKE2Config(initialize bool, serverAddress, rke2AgentType, rke2Token, TlsSan
 		},
 	}
 
-	var yamlFile = "../templates/config.yaml"
+	var yamlFile = fmt.Sprintf("%s/templates/config.yaml", os.Getenv("PWD"))
 	yaml, err := template.New(yamlFile).ParseFiles(yamlFile)
 	if err != nil {
 		logrus.Error("Error parsing YAML file:", err)
