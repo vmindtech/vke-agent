@@ -114,11 +114,11 @@ func DeployHelmCharts(clusterUUID, VmindCloudAuthURL, ApplicationCredentialID, A
 
 	cluster := []models.InitMaster{
 		{
-			VmindCloudAuthURL:        VmindCloudAuthURL,
-			ApplicationCredentialID:  ApplicationCredentialID,
-			ApplicationCredentialKey: ApplicationCredentialSecret,
-			ClusterAutoscalerVersion: AutoScalerVersion,
-			CloudProviderVkeVersion:  CloudControllerManagerVersion,
+			VmindCloudAuthURL:           VmindCloudAuthURL,
+			ApplicationCredentialID:     ApplicationCredentialID,
+			ApplicationCredentialSecret: ApplicationCredentialSecret,
+			ClusterAutoscalerVersion:    AutoScalerVersion,
+			CloudProviderVkeVersion:     CloudControllerManagerVersion,
 		},
 	}
 	err = yaml.Execute(f, cluster)
