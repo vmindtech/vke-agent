@@ -96,7 +96,11 @@ func PushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, 
 	return nil
 }
 func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VmindCloudAuthURL, ApplicationCredentialID, ApplicationCredentialKey, CloudControllerManagerVersion, AutoScalerVersion string) error {
-	os.MkdirAll("/var/lib/rancher/rke2/server/manifests", 0755)
+	err := os.MkdirAll("/var/lib/rancher/rke2/server/manifests", 0755)
+	if err != nil {
+		logrus.Error("Error creating directory:", err)
+		return err
+	}
 
 	var yamlFile = "k8s-helmchart-for-cloud-provider.yml"
 	yaml, err := template.New(yamlFile).ParseFiles(yamlFile)
@@ -107,7 +111,7 @@ func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VmindCloudAuthURL, Ap
 
 	f, err := os.Create("/var/lib/rancher/rke2/server/manifests/k8s-helmchart-for-cloud-provider.yml")
 	if err != nil {
-		logrus.Error("Error creating config.yaml file:", err)
+		logrus.Error("Error creating k8s-helmchart-for-cloud-provider.yml file:", err)
 		return err
 	}
 	defer f.Close()
@@ -137,7 +141,7 @@ func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VmindCloudAuthURL, Ap
 
 	f, err = os.Create("/var/lib/rancher/rke2/server/manifests/k8s-cluster-autoscaler.yml")
 	if err != nil {
-		logrus.Error("Error creating config.yaml file:", err)
+		logrus.Error("Error creating k8s-cluster-autoscaler.yml file:", err)
 		return err
 	}
 	defer f.Close()
