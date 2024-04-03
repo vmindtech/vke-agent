@@ -9,7 +9,7 @@ spec:
   targetNamespace: kube-system
   bootstrap: true
   set:
-   cloudConfig.global.auth-url: "{{.AuthURL}}"
+   cloudConfig.global.auth-url: "{{.vmindCloudAuthURL}}"
    cloudConfig.global.application-credential-id: "{{.ApplicationCredentialID}}"
    cloudConfig.global.application-credential-secret: "{{.ApplicationCredentialSecret}}"
    cloudConfig.global.tls-insecure: "yes"

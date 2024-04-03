@@ -95,7 +95,7 @@ func PushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, 
 
 	return nil
 }
-func DeployHelmCharts(clusterUUID, AuthURL, ApplicationCredentialID, ApplicationCredentialSecret, CloudControllerManagerVersion, AutoScalerVersion string) error {
+func DeployHelmCharts(clusterUUID, VmindCloudAuthURL, ApplicationCredentialID, ApplicationCredentialSecret, CloudControllerManagerVersion, AutoScalerVersion string) error {
 	os.MkdirAll("/var/lib/rancher/rke2/server/manifests", 0755)
 
 	var yamlFile = "k8s-helmchart-for-cloud-provider.yml"
@@ -114,7 +114,7 @@ func DeployHelmCharts(clusterUUID, AuthURL, ApplicationCredentialID, Application
 
 	cluster := []models.InitMaster{
 		{
-			VmindCloudAuthURL:        AuthURL,
+			VmindCloudAuthURL:        VmindCloudAuthURL,
 			ApplicationCredentialID:  ApplicationCredentialID,
 			ApplicationCredentialKey: ApplicationCredentialSecret,
 			ClusterAutoscalerVersion: AutoScalerVersion,
