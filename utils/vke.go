@@ -114,7 +114,7 @@ func DeployHelmCharts(clusterUUID, AuthURL, ApplicationCredentialID, Application
 
 	cluster := []models.InitMaster{
 		{
-			VmindCloudToken:          AuthURL,
+			VmindCloudAuthURL:        AuthURL,
 			ApplicationCredentialID:  ApplicationCredentialID,
 			ApplicationCredentialKey: ApplicationCredentialSecret,
 			ClusterAutoscalerVersion: AutoScalerVersion,

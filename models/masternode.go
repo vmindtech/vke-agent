@@ -8,7 +8,7 @@ type InitMaster struct {
 	ServerAddress            string
 	Rke2AgentType            string
 	Rke2NodeLabel            []string
-	VmindCloudToken          string
+	VmindCloudAuthURL        string
 	ApplicationCredentialID  string
 	ApplicationCredentialKey string
 	ClusterAutoscalerVersion string

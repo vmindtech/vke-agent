@@ -5,7 +5,7 @@ metadata:
   name: cloud-provider-vke
   namespace: kube-system
 spec:
-  chart: https://github.com/vmindtech/cloud-provider-vke/releases/download/vke-cloud-controller-manager-{{.CloudControllerManagerVersion}}/vke-cloud-controller-manager-{{.CloudControllerManagerVersion}}.tgz
+  chart: https://github.com/vmindtech/cloud-provider-vke/releases/download/vke-cloud-controller-manager-{{.CloudProviderVkeVersion}}/vke-cloud-controller-manager-{{.CloudProviderVkeVersion}}.tgz
   targetNamespace: kube-system
   bootstrap: true
   set:

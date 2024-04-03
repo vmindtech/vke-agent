@@ -57,7 +57,7 @@ With this tool, you can quickly provision both master and worker nodes.`,
 				logrus.Error("RKE2 config push error:", err)
 				return
 			}
-			err = utils.DeployHelmCharts(config.RKE2ClusterUUID, config.VmindCloudToken, config.ApplicationCredentialID, config.ApplicationCredentialKey, config.CloudProviderVkeVersion, config.ClusterAutoscalerVersion)
+			err = utils.DeployHelmCharts(config.RKE2ClusterUUID, config.VmindCloudAuthURL, config.ApplicationCredentialID, config.ApplicationCredentialKey, config.CloudProviderVkeVersion, config.ClusterAutoscalerVersion)
 			if err != nil {
 				logrus.Error("Helm chart deployment error:", err)
 				return
@@ -82,7 +82,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterUUID, "rke2ClusterUUID", "", "Cluster UUID (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentVKEAPIEndpoint, "rke2AgentVKEAPIEndpoint", "", "VKE API Endpoint (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentVKEAPIAuthToken, "rke2AgentVKEAPIAuthToken", "", "VKE API Auth Token (required)")
-	rootCmd.PersistentFlags().StringVar(&config.VmindCloudToken, "vmindCloudToken", "", "Vmind Cloud Token (required)")
+	rootCmd.PersistentFlags().StringVar(&config.VmindCloudAuthURL, "vmindCloudAuthURL", "", "Vmind Cloud Auth URL (required)")
 	rootCmd.PersistentFlags().StringVar(&config.ClusterAutoscalerVersion, "clusterAutoscalerVersion", "", "Cluster Autoscaler Version (required)")
 	rootCmd.PersistentFlags().StringVar(&config.CloudProviderVkeVersion, "cloudProviderVkeVersion", "", "Cloud Provider VKE Version (required)")
 	rootCmd.PersistentFlags().StringVar(&config.ApplicationCredentialID, "applicationCredentialID", "", "Application Credential ID (required)")
