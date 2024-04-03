@@ -95,7 +95,7 @@ func PushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, 
 
 	return nil
 }
-func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VmindCloudAuthURL, ApplicationCredentialID, ApplicationCredentialSecret, CloudControllerManagerVersion, AutoScalerVersion string) error {
+func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VmindCloudAuthURL, ApplicationCredentialID, ApplicationCredentialKey, CloudControllerManagerVersion, AutoScalerVersion string) error {
 	os.MkdirAll("/var/lib/rancher/rke2/server/manifests", 0755)
 
 	var yamlFile = "k8s-helmchart-for-cloud-provider.yml"
@@ -114,13 +114,13 @@ func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VmindCloudAuthURL, Ap
 
 	cluster := []models.InitMaster{
 		{
-			RKE2ClusterProjectUUID:      RKE2ClusterProjectUUID,
-			RKE2ClusterUUID:             ClusterUUID,
-			VmindCloudAuthURL:           VmindCloudAuthURL,
-			ApplicationCredentialID:     ApplicationCredentialID,
-			ApplicationCredentialSecret: ApplicationCredentialSecret,
-			ClusterAutoscalerVersion:    AutoScalerVersion,
-			CloudProviderVkeVersion:     CloudControllerManagerVersion,
+			RKE2ClusterProjectUUID:   RKE2ClusterProjectUUID,
+			RKE2ClusterUUID:          ClusterUUID,
+			VmindCloudAuthURL:        VmindCloudAuthURL,
+			ApplicationCredentialID:  ApplicationCredentialID,
+			ApplicationCredentialKey: ApplicationCredentialKey,
+			ClusterAutoscalerVersion: AutoScalerVersion,
+			CloudProviderVkeVersion:  CloudControllerManagerVersion,
 		},
 	}
 	err = yaml.Execute(f, cluster)

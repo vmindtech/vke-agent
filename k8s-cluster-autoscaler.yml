@@ -183,6 +183,6 @@ stringData:
     "cluster_id": "{{.RKE2ClusterUUID}}",
     "openstack_auth_url": "{{.VmindCloudAuthURL}}",
     "application_key": "{{.ApplicationCredentialID}}",
-    "application_secret": "{{.ApplicationCredentialSecret}}"
+    "application_secret": "{{.ApplicationCredentialKey}}"
     }
 {{ end }}
