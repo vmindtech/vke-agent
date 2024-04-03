@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 
@@ -92,5 +93,38 @@ func PushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, 
 		return err
 	}
 
+	return nil
+}
+func DeployHelmCharts(clusterUUID, AuthURL, ApplicationCredentialID, ApplicationCredentialSecret, CloudControllerManagerVersion, AutoScalerVersion string) error {
+	os.MkdirAll("/var/lib/rancher/rke2/server/manifests", 0755)
+
+	var yamlFile = "k8s-helmchart-for-cloud-provider.yml"
+	yaml, err := template.New(yamlFile).ParseFiles(yamlFile)
+	if err != nil {
+		logrus.Error("Error parsing YAML file:", err)
+		return err
+	}
+
+	f, err := os.Create("/var/lib/rancher/rke2/server/manifests/k8s-helmchart-for-cloud-provider.yml")
+	if err != nil {
+		logrus.Error("Error creating config.yaml file:", err)
+		return err
+	}
+	defer f.Close()
+
+	cluster := []models.InitMaster{
+		{
+			VmindCloudToken:          AuthURL,
+			ApplicationCredentialID:  ApplicationCredentialID,
+			ApplicationCredentialKey: ApplicationCredentialSecret,
+			ClusterAutoscalerVersion: AutoScalerVersion,
+			CloudProviderVkeVersion:  CloudControllerManagerVersion,
+		},
+	}
+	err = yaml.Execute(f, cluster)
+	if err != nil {
+		logrus.Error("Error executing YAML template:", err)
+		return err
+	}
 	return nil
 }

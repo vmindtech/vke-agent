@@ -57,6 +57,11 @@ With this tool, you can quickly provision both master and worker nodes.`,
 				logrus.Error("RKE2 config push error:", err)
 				return
 			}
+			err = utils.DeployHelmCharts(config.RKE2ClusterUUID, config.VmindCloudToken, config.ApplicationCredentialID, config.ApplicationCredentialKey, config.CloudProviderVkeVersion, config.ClusterAutoscalerVersion)
+			if err != nil {
+				logrus.Error("Helm chart deployment error:", err)
+				return
+			}
 			logrus.Info("RKE2 config pushed.")
 		} else {
 			logrus.Info("RKE2 config not pushed.")
