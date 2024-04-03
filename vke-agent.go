@@ -82,6 +82,11 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterUUID, "rke2ClusterUUID", "", "Cluster UUID (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentVKEAPIEndpoint, "rke2AgentVKEAPIEndpoint", "", "VKE API Endpoint (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentVKEAPIAuthToken, "rke2AgentVKEAPIAuthToken", "", "VKE API Auth Token (required)")
+	rootCmd.PersistentFlags().StringVar(&config.VmindCloudToken, "vmindCloudToken", "", "Vmind Cloud Token (required)")
+	rootCmd.PersistentFlags().StringVar(&config.ClusterAutoscalerVersion, "clusterAutoscalerVersion", "", "Cluster Autoscaler Version (required)")
+	rootCmd.PersistentFlags().StringVar(&config.CloudProviderVkeVersion, "cloudProviderVkeVersion", "", "Cloud Provider VKE Version (required)")
+	rootCmd.PersistentFlags().StringVar(&config.ApplicationCredentialID, "applicationCredentialID", "", "Application Credential ID (required)")
+	rootCmd.PersistentFlags().StringVar(&config.ApplicationCredentialKey, "applicationCredentialKey", "", "Application Credential Key (required)")
 
 	rootCmd.SetHelpCommand(&cobra.Command{Use: "no-help-flag"})
 }
