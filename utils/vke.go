@@ -95,7 +95,7 @@ func PushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, 
 
 	return nil
 }
-func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VmindCloudAuthURL, ApplicationCredentialID, ApplicationCredentialKey, CloudControllerManagerVersion, AutoScalerVersion string) error {
+func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VkeCloudAuthURL, ApplicationCredentialID, ApplicationCredentialKey, CloudControllerManagerVersion, AutoScalerVersion string) error {
 	err := os.MkdirAll("/var/lib/rancher/rke2/server/manifests", 0755)
 	if err != nil {
 		logrus.Error("Error creating directory:", err)
@@ -120,7 +120,7 @@ func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VmindCloudAuthURL, Ap
 		{
 			RKE2ClusterProjectUUID:   RKE2ClusterProjectUUID,
 			RKE2ClusterUUID:          ClusterUUID,
-			VmindCloudAuthURL:        VmindCloudAuthURL,
+			VkeCloudAuthURL:          VkeCloudAuthURL,
 			ApplicationCredentialID:  ApplicationCredentialID,
 			ApplicationCredentialKey: ApplicationCredentialKey,
 			ClusterAutoscalerVersion: AutoScalerVersion,

@@ -10,7 +10,7 @@ type InitMaster struct {
 	Rke2NodeLabel            []string
 	RKE2ClusterProjectUUID   string
 	RKE2ClusterUUID          string
-	VmindCloudAuthURL        string
+	VkeCloudAuthURL          string
 	ApplicationCredentialID  string
 	ApplicationCredentialKey string
 	ClusterAutoscalerVersion string

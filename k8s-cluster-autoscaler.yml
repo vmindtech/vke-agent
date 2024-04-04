@@ -181,7 +181,7 @@ stringData:
     {
     "tenant_id": "{{.RKE2ClusterProjectUUID}}",
     "cluster_id": "{{.RKE2ClusterUUID}}",
-    "openstack_auth_url": "{{.VmindCloudAuthURL}}",
+    "openstack_auth_url": "{{.VkeCloudAuthURL}}",
     "application_key": "{{.ApplicationCredentialID}}",
     "application_secret": "{{.ApplicationCredentialKey}}"
     }

@@ -13,7 +13,7 @@ type Config struct {
 	RKE2ClusterProjectUUID   string
 	RKE2AgentVKEAPIEndpoint  string
 	RKE2AgentVKEAPIAuthToken string
-	VmindCloudAuthURL        string
+	VkeCloudAuthURL          string
 	ClusterAutoscalerVersion string
 	CloudProviderVkeVersion  string
 	ApplicationCredentialID  string
