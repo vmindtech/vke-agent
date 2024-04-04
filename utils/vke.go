@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 
@@ -89,6 +90,65 @@ func PushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, 
 
 	if resp.StatusCode != 200 {
 		logrus.Error("KubeConfig response status code error:", resp.StatusCode)
+		return err
+	}
+
+	return nil
+}
+func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VkeCloudAuthURL, ApplicationCredentialID, ApplicationCredentialKey, CloudControllerManagerVersion, AutoScalerVersion string) error {
+	err := os.MkdirAll("/var/lib/rancher/rke2/server/manifests", 0755)
+	if err != nil {
+		logrus.Error("Error creating directory:", err)
+		return err
+	}
+
+	var yamlFile = "k8s-helmchart-for-cloud-provider.yml"
+	yaml, err := template.New(yamlFile).ParseFiles(yamlFile)
+	if err != nil {
+		logrus.Error("Error parsing YAML file:", err)
+		return err
+	}
+
+	f, err := os.Create("/var/lib/rancher/rke2/server/manifests/k8s-helmchart-for-cloud-provider.yml")
+	if err != nil {
+		logrus.Error("Error creating k8s-helmchart-for-cloud-provider.yml file:", err)
+		return err
+	}
+	defer f.Close()
+
+	cluster := []models.InitMaster{
+		{
+			RKE2ClusterProjectUUID:   RKE2ClusterProjectUUID,
+			RKE2ClusterUUID:          ClusterUUID,
+			VkeCloudAuthURL:          VkeCloudAuthURL,
+			ApplicationCredentialID:  ApplicationCredentialID,
+			ApplicationCredentialKey: ApplicationCredentialKey,
+			ClusterAutoscalerVersion: AutoScalerVersion,
+			CloudProviderVkeVersion:  CloudControllerManagerVersion,
+		},
+	}
+	err = yaml.Execute(f, cluster)
+	if err != nil {
+		logrus.Error("Error executing YAML template:", err)
+		return err
+	}
+	yamlFile = "k8s-cluster-autoscaler.yml"
+	yaml, err = template.New(yamlFile).ParseFiles(yamlFile)
+	if err != nil {
+		logrus.Error("Error parsing YAML file:", err)
+		return err
+	}
+
+	f, err = os.Create("/var/lib/rancher/rke2/server/manifests/k8s-cluster-autoscaler.yml")
+	if err != nil {
+		logrus.Error("Error creating k8s-cluster-autoscaler.yml file:", err)
+		return err
+	}
+	defer f.Close()
+
+	err = yaml.Execute(f, cluster)
+	if err != nil {
+		logrus.Error("Error executing YAML template:", err)
 		return err
 	}
 
