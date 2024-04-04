@@ -48,11 +48,11 @@ Follow these steps to build and run the project:
     ```
 3. Use the vke-agent command to create Kubernetes nodes:
    ```bash
-    ./vke-agent -initialize=true -rke2AgentType="server" -rke2Token="your-token" -serverAddress="LB-ADDRESS" -kubeversion="v1.28.2+rke2r1"  -tlsSan="LB-ADDRESS" -rke2ClusterName="your-cluster-name" -rke2ClusterUUID="your-cluster-uuıd" -rke2AgentVKEAPIEndpoint="vke-endpoint" -rke2AgentVKEAPIAuthToken="openstack-auth-token"
+    ./vke-agent --initialize={{.initiliazeFlag}} --rke2AgentType={{.rke2AgentType}} --rke2Token={{.rke2Token}} --serverAddress={{.serverAddress}} --kubeversion={{.kubeVersion}} --tlsSan={{.serverAddress}} --rke2ClusterName={{.clusterName}} --rke2ClusterUUID={{.clusterUUID}} --rke2ClusterProjectUUID={{.projectUUID}} --rke2AgentVKEAPIEndpoint={{.vkeAPIEndpoint}} --rke2AgentVKEAPIAuthToken={{.authToken}} --rke2NodeLabel={{.rke2NodeLabel}} --vkeCloudAuthURL={{.vkeCloudAuthURL}} --clusterAutoscalerVersion={{.clusterAutoscalerVersion}} --cloudProviderVkeVersion={{.cloudProviderVkeVersion}} --applicationCredentialID={{.applicationCredentialID}} --applicationCredentialKey={{.applicationCredentialKey}}
     ```
    You can use the above command to create the master node. For worker nodes, you can use the following commands:
       ```bash
-    ./vke-agent -initialize=false -rke2AgentType="agent" -rke2Token="your-token" -serverAddress="your-loadbalancer-adress" -kubeversion="v1.28.2+rke2r1"  -tlsSan="your-loadbalancer-adress" -rke2ClusterName="your-cluster-name" -rke2ClusterUUID="your-cluster-uuıd" -rke2AgentVKEAPIEndpoint="vke-endpoint" -rke2AgentVKEAPIAuthToken="openstack-auth-token"
+    ./vke-agent --initialize={{.initiliazeFlag}} --rke2AgentType={{.rke2AgentType}} --rke2Token={{.rke2Token}} --serverAddress={{.serverAddress}} --kubeversion={{.kubeVersion}} --tlsSan={{.serverAddress}} --rke2ClusterName={{.clusterName}} --rke2ClusterUUID={{.clusterUUID}} --rke2ClusterProjectUUID={{.projectUUID}} --rke2AgentVKEAPIEndpoint={{.vkeAPIEndpoint}} --rke2AgentVKEAPIAuthToken={{.authToken}} --rke2NodeLabel={{.rke2NodeLabel}} --vkeCloudAuthURL={{.vkeCloudAuthURL}} --clusterAutoscalerVersion={{.clusterAutoscalerVersion}} --cloudProviderVkeVersion={{.cloudProviderVkeVersion}} --applicationCredentialID={{.applicationCredentialID}} --applicationCredentialKey={{.applicationCredentialKey}}
     ```
 
 <!-- LICENSE -->
