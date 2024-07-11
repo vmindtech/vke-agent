@@ -1,5 +1,4 @@
 ##WE SEND STATIC VERSION
-{{ range .}}
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
