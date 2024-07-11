@@ -152,5 +152,26 @@ func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VkeCloudAuthURL, Appl
 		return err
 	}
 
+	//Cinder Storage
+	yamlFile = "k8s-cinder-for-storage.yml"
+	yaml, err = template.New(yamlFile).ParseFiles(yamlFile)
+	if err != nil {
+		logrus.Error("Error parsing YAML file:", err)
+		return err
+	}
+
+	f, err = os.Create("/var/lib/rancher/rke2/server/manifests/k8s-cinder-for-storage.yml")
+	if err != nil {
+		logrus.Error("Error creating k8s-cinder-for-storage.yml file:", err)
+		return err
+	}
+	defer f.Close()
+
+	err = yaml.Execute(f, cluster)
+	if err != nil {
+		logrus.Error("Error executing YAML template:", err)
+		return err
+	}
+
 	return nil
 }
