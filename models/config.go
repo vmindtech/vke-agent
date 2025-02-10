@@ -15,6 +15,7 @@ type Config struct {
 	RKE2AgentVKEAPIAuthToken string
 	VkeCloudAuthURL          string
 	ClusterAutoscalerVersion string
+	ClusterAgentVersion      string
 	CloudProviderVkeVersion  string
 	ApplicationCredentialID  string
 	ApplicationCredentialKey string

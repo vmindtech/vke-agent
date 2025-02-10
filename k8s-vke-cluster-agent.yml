@@ -1,0 +1,21 @@
+{{ range .}}
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: vke-cluster-agent
+  namespace: kube-system
+spec:
+  chart: https://github.com/vmindtech/vke-cluster-agent/releases/download/vke-cluster-agent-{{.VkeClusterAgentVersion}}/vke-cluster-agent-{{.VkeClusterAgentVersion}}.tgz
+  targetNamespace: kube-system
+  bootstrap: true
+  set:
+   ENV: "production"
+   APP_NAME: "vke-cluster-agent"
+   VERSION: "{{.VkeClusterAgentVersion}}"
+   PORT: 80
+   VKE_CLUSTER_ID: "{{.RKE2ClusterUUID}}"
+   VKE_PROJECT_ID: "{{.RKE2ClusterProjectUUID}}"
+   VKE_IDENTITY_URL: "{{.VkeCloudAuthURL}}"
+   VKE_APPLICATION_CREDENTIAL_ID: "{{.ApplicationCredentialID}}"
+   VKE_APPLICATION_CREDENTIAL_SECRET: "{{.ApplicationCredentialKey}}"
+{{ end }}

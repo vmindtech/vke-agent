@@ -33,7 +33,14 @@ With this tool, you can quickly provision both master and worker nodes.`,
 			logrus.Error("Indexing error:", err)
 			return
 		}
-		if err := utils.RKE2Config(config.Initialize, config.ServerAddress, config.RKE2AgentType, config.RKE2Token, config.TLSSan, config.RKE2NodeLabel); err != nil {
+		if err := utils.RKE2Config(
+			config.Initialize,
+			config.ServerAddress,
+			config.RKE2AgentType,
+			config.RKE2Token,
+			config.TLSSan,
+			config.RKE2NodeLabel,
+		); err != nil {
 			logrus.Error("Config creation error:", err)
 			return
 		}
@@ -52,12 +59,29 @@ With this tool, you can quickly provision both master and worker nodes.`,
 			return
 		}
 		if config.Initialize {
-			err := utils.PushRKE2Config(config.Initialize, config.RKE2AgentType, config.ServerAddress, config.RKE2ClusterName, config.RKE2ClusterUUID, config.RKE2AgentVKEAPIEndpoint, config.RKE2AgentVKEAPIAuthToken)
+			err := utils.PushRKE2Config(
+				config.Initialize,
+				config.RKE2AgentType,
+				config.ServerAddress,
+				config.RKE2ClusterName,
+				config.RKE2ClusterUUID,
+				config.RKE2AgentVKEAPIEndpoint,
+				config.RKE2AgentVKEAPIAuthToken,
+			)
 			if err != nil {
 				logrus.Error("RKE2 config push error:", err)
 				return
 			}
-			err = utils.DeployHelmCharts(config.RKE2ClusterUUID, config.RKE2ClusterProjectUUID, config.VkeCloudAuthURL, config.ApplicationCredentialID, config.ApplicationCredentialKey, config.CloudProviderVkeVersion, config.ClusterAutoscalerVersion)
+			err = utils.DeployHelmCharts(
+				config.RKE2ClusterUUID,
+				config.RKE2ClusterProjectUUID,
+				config.VkeCloudAuthURL,
+				config.ApplicationCredentialID,
+				config.ApplicationCredentialKey,
+				config.CloudProviderVkeVersion,
+				config.ClusterAutoscalerVersion,
+				config.ClusterAgentVersion,
+			)
 			if err != nil {
 				logrus.Error("Helm chart deployment error:", err)
 				return
@@ -85,6 +109,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentVKEAPIAuthToken, "rke2AgentVKEAPIAuthToken", "", "VKE API Auth Token (required)")
 	rootCmd.PersistentFlags().StringVar(&config.VkeCloudAuthURL, "vkeCloudAuthURL", "", "Vmind Cloud Auth URL (required)")
 	rootCmd.PersistentFlags().StringVar(&config.ClusterAutoscalerVersion, "clusterAutoscalerVersion", "", "Cluster Autoscaler Version (required)")
+	rootCmd.PersistentFlags().StringVar(&config.ClusterAgentVersion, "clusterAgentVersion", "", "Cluster Agent Version (required)")
 	rootCmd.PersistentFlags().StringVar(&config.CloudProviderVkeVersion, "cloudProviderVkeVersion", "", "Cloud Provider VKE Version (required)")
 	rootCmd.PersistentFlags().StringVar(&config.ApplicationCredentialID, "applicationCredentialID", "", "Application Credential ID (required)")
 	rootCmd.PersistentFlags().StringVar(&config.ApplicationCredentialKey, "applicationCredentialKey", "", "Application Credential Key (required)")

@@ -15,7 +15,15 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func PushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, ClusterUUID, VKEAPIEndpoint, VKEAPIAuthToken string) error {
+func PushRKE2Config(
+	initialize bool,
+	rke2AgentType,
+	serverAddress,
+	clusterName,
+	ClusterUUID,
+	VKEAPIEndpoint,
+	VKEAPIAuthToken string,
+) error {
 	_, err := os.Stat("/etc/rancher/rke2/rke2.yaml")
 	if os.IsNotExist(err) {
 		logrus.Error("RKE2 config file not found")
@@ -95,7 +103,16 @@ func PushRKE2Config(initialize bool, rke2AgentType, serverAddress, clusterName, 
 
 	return nil
 }
-func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VkeCloudAuthURL, ApplicationCredentialID, ApplicationCredentialKey, CloudControllerManagerVersion, AutoScalerVersion string) error {
+func DeployHelmCharts(
+	ClusterUUID,
+	RKE2ClusterProjectUUID,
+	VkeCloudAuthURL,
+	ApplicationCredentialID,
+	ApplicationCredentialKey,
+	CloudControllerManagerVersion,
+	AutoScalerVersion,
+	ClusterAgentVersion string,
+) error {
 	err := os.MkdirAll("/var/lib/rancher/rke2/server/manifests", 0755)
 	if err != nil {
 		logrus.Error("Error creating directory:", err)
@@ -124,6 +141,7 @@ func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VkeCloudAuthURL, Appl
 			ApplicationCredentialID:  ApplicationCredentialID,
 			ApplicationCredentialKey: ApplicationCredentialKey,
 			ClusterAutoscalerVersion: AutoScalerVersion,
+			ClusterAgentVersion:      ClusterAgentVersion,
 			CloudProviderVkeVersion:  CloudControllerManagerVersion,
 		},
 	}
@@ -166,6 +184,25 @@ func DeployHelmCharts(ClusterUUID, RKE2ClusterProjectUUID, VkeCloudAuthURL, Appl
 		return err
 	}
 	defer f.Close()
+
+	err = yaml.Execute(f, cluster)
+	if err != nil {
+		logrus.Error("Error executing YAML template:", err)
+		return err
+	}
+
+	yamlFile = "k8s-vke-cluster-agent.yml"
+	yaml, err = template.New(yamlFile).ParseFiles(yamlFile)
+	if err != nil {
+		logrus.Error("Error parsing YAML file:", err)
+		return err
+	}
+
+	f, err = os.Create("/var/lib/rancher/rke2/server/manifests/k8s-vke-cluster-agent.yml")
+	if err != nil {
+		logrus.Error("Error creating k8s-vke-cluster-agent.yml file:", err)
+		return err
+	}
 
 	err = yaml.Execute(f, cluster)
 	if err != nil {

@@ -14,5 +14,6 @@ type InitMaster struct {
 	ApplicationCredentialID  string
 	ApplicationCredentialKey string
 	ClusterAutoscalerVersion string
+	ClusterAgentVersion      string
 	CloudProviderVkeVersion  string
 }
