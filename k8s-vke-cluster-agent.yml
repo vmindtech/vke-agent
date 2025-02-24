@@ -1,4 +1,4 @@
-{{- range . }}
+{{ range . }}
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
@@ -22,4 +22,4 @@ spec:
       VKE_IDENTITY_URL: "{{.VkeCloudAuthURL}}"
       VKE_APPLICATION_CREDENTIAL_ID: "{{.ApplicationCredentialID}}"
       VKE_APPLICATION_CREDENTIAL_SECRET: "{{.ApplicationCredentialKey}}"
-{{- end }}
+{{ end }}
