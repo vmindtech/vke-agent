@@ -81,6 +81,7 @@ With this tool, you can quickly provision both master and worker nodes.`,
 				config.CloudProviderVkeVersion,
 				config.ClusterAutoscalerVersion,
 				config.ClusterAgentVersion,
+				config.RKE2AgentVKEAPIEndpoint,
 			)
 			if err != nil {
 				logrus.Error("Helm chart deployment error:", err)

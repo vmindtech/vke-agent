@@ -18,10 +18,12 @@ spec:
       pullPolicy: "IfNotPresent"
     environments:
       ENV: "production"
+      golang_env: "production"
       APP_NAME: "vke-cluster-agent"
       VERSION: "v{{.ClusterAgentVersion}}"
       VKE_CLUSTER_ID: "{{.RKE2ClusterUUID}}"
       VKE_PROJECT_ID: "{{.RKE2ClusterProjectUUID}}"
+      VKE_URL: "{{.RKE2AgentVKEAPIEndpoint}}"
       VKE_IDENTITY_URL: "{{.VkeCloudAuthURL}}"
       VKE_APPLICATION_CREDENTIAL_ID: "{{.ApplicationCredentialID}}"
       VKE_APPLICATION_CREDENTIAL_SECRET: "{{.ApplicationCredentialKey}}"

@@ -16,4 +16,5 @@ type InitMaster struct {
 	ClusterAutoscalerVersion string
 	ClusterAgentVersion      string
 	CloudProviderVkeVersion  string
+	RKE2AgentVKEAPIEndpoint  string
 }

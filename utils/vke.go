@@ -111,7 +111,8 @@ func DeployHelmCharts(
 	ApplicationCredentialKey,
 	CloudControllerManagerVersion,
 	AutoScalerVersion,
-	ClusterAgentVersion string,
+	ClusterAgentVersion,
+	RKE2AgentVKEAPIEndpoint string,
 ) error {
 	err := os.MkdirAll("/var/lib/rancher/rke2/server/manifests", 0755)
 	if err != nil {
@@ -143,6 +144,7 @@ func DeployHelmCharts(
 			ClusterAutoscalerVersion: AutoScalerVersion,
 			ClusterAgentVersion:      ClusterAgentVersion,
 			CloudProviderVkeVersion:  CloudControllerManagerVersion,
+			RKE2AgentVKEAPIEndpoint:  RKE2AgentVKEAPIEndpoint,
 		},
 	}
 	err = yaml.Execute(f, cluster)
