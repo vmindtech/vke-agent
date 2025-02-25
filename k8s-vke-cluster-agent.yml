@@ -13,10 +13,13 @@ spec:
       create: true
       automount: true
       name: "vke-cluster-agent"
+    image:
+      tag: "v{{.ClusterAgentVersion}}"
+      pullPolicy: "IfNotPresent"
     environments:
       ENV: "production"
       APP_NAME: "vke-cluster-agent"
-      VERSION: "{{.ClusterAgentVersion}}"
+      VERSION: "v{{.ClusterAgentVersion}}"
       VKE_CLUSTER_ID: "{{.RKE2ClusterUUID}}"
       VKE_PROJECT_ID: "{{.RKE2ClusterProjectUUID}}"
       VKE_IDENTITY_URL: "{{.VkeCloudAuthURL}}"
