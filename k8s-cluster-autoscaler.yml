@@ -143,6 +143,9 @@ spec:
         - image: vmindtech/cluster-autoscaler:{{.ClusterAutoscalerVersion}}
           name: cluster-autoscaler
           imagePullPolicy: IfNotPresent
+          env:
+          - name: VKE_URL
+            value: "{{.RKE2AgentVKEAPIEndpoint}}"
           resources:
             limits:
               cpu: 100m
