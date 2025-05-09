@@ -112,7 +112,8 @@ func DeployHelmCharts(
 	CloudControllerManagerVersion,
 	AutoScalerVersion,
 	ClusterAgentVersion,
-	RKE2AgentVKEAPIEndpoint string,
+	RKE2AgentVKEAPIEndpoint,
+	LoadBalancerFloatingNetworkID string,
 ) error {
 	err := os.MkdirAll("/var/lib/rancher/rke2/server/manifests", 0755)
 	if err != nil {
@@ -136,15 +137,16 @@ func DeployHelmCharts(
 
 	cluster := []models.InitMaster{
 		{
-			RKE2ClusterProjectUUID:   RKE2ClusterProjectUUID,
-			RKE2ClusterUUID:          ClusterUUID,
-			VkeCloudAuthURL:          VkeCloudAuthURL,
-			ApplicationCredentialID:  ApplicationCredentialID,
-			ApplicationCredentialKey: ApplicationCredentialKey,
-			ClusterAutoscalerVersion: AutoScalerVersion,
-			ClusterAgentVersion:      ClusterAgentVersion,
-			CloudProviderVkeVersion:  CloudControllerManagerVersion,
-			RKE2AgentVKEAPIEndpoint:  RKE2AgentVKEAPIEndpoint,
+			RKE2ClusterProjectUUID:        RKE2ClusterProjectUUID,
+			RKE2ClusterUUID:               ClusterUUID,
+			VkeCloudAuthURL:               VkeCloudAuthURL,
+			ApplicationCredentialID:       ApplicationCredentialID,
+			ApplicationCredentialKey:      ApplicationCredentialKey,
+			ClusterAutoscalerVersion:      AutoScalerVersion,
+			ClusterAgentVersion:           ClusterAgentVersion,
+			CloudProviderVkeVersion:       CloudControllerManagerVersion,
+			RKE2AgentVKEAPIEndpoint:       RKE2AgentVKEAPIEndpoint,
+			LoadBalancerFloatingNetworkID: LoadBalancerFloatingNetworkID,
 		},
 	}
 	err = yaml.Execute(f, cluster)

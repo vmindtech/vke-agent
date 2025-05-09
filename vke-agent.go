@@ -82,6 +82,7 @@ With this tool, you can quickly provision both master and worker nodes.`,
 				config.ClusterAutoscalerVersion,
 				config.ClusterAgentVersion,
 				config.RKE2AgentVKEAPIEndpoint,
+				config.LoadBalancerFloatingNetworkID,
 			)
 			if err != nil {
 				logrus.Error("Helm chart deployment error:", err)
@@ -114,6 +115,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&config.CloudProviderVkeVersion, "cloudProviderVkeVersion", "", "Cloud Provider VKE Version (required)")
 	rootCmd.PersistentFlags().StringVar(&config.ApplicationCredentialID, "applicationCredentialID", "", "Application Credential ID (required)")
 	rootCmd.PersistentFlags().StringVar(&config.ApplicationCredentialKey, "applicationCredentialKey", "", "Application Credential Key (required)")
+	rootCmd.PersistentFlags().StringVar(&config.LoadBalancerFloatingNetworkID, "loadBalancerFloatingNetworkID", "", "LoadBalancer Floating Network ID (required)")
 
 	rootCmd.SetHelpCommand(&cobra.Command{Use: "no-help-flag"})
 }
