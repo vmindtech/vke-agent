@@ -15,4 +15,3 @@ node-name: {{ .NodeName }}
 {{ end }}
 cloud-provider-name: external
 disable-cloud-controller: true
-with-node-id: true
