@@ -171,6 +171,13 @@ spec:
         - name: cloud-config
           secret:
             secretName: cloudstack-secret
+      tolerations: 
+        - effect: NoExecute
+          key: CriticalAddonsOnly
+          value: "true"
+        - effect: NoSchedule
+          key: node.cloudprovider.kubernetes.io/uninitialized
+          value: "true"
 ---
 ---
 apiVersion: v1
