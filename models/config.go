@@ -8,6 +8,7 @@ type Config struct {
 	RKE2Token                     string
 	RKE2AgentType                 string
 	RKE2NodeLabel                 string
+	RKE2NodeTaints                string
 	RKE2ClusterName               string
 	RKE2ClusterUUID               string
 	RKE2ClusterProjectUUID        string

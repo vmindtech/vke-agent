@@ -8,6 +8,7 @@ type InitMaster struct {
 	ServerAddress                 string
 	Rke2AgentType                 string
 	Rke2NodeLabel                 []string
+	Rke2NodeTaints                []string
 	RKE2ClusterProjectUUID        string
 	RKE2ClusterUUID               string
 	VkeCloudAuthURL               string

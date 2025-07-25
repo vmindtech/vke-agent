@@ -46,7 +46,7 @@ func RKE2ServiceStart(rke2AgentType string) error {
 	return rke2ServiceStartCommand.Run()
 }
 
-func RKE2Config(initialize bool, serverAddress, rke2AgentType, rke2Token, TlsSan, rke2NodeLabel string) error {
+func RKE2Config(initialize bool, serverAddress, rke2AgentType, rke2Token, TlsSan, rke2NodeLabel, rke2NodeTaints string) error {
 	logrus.Info("RKE2 config creating...")
 
 	hostname, err := os.Hostname()
@@ -58,16 +58,17 @@ func RKE2Config(initialize bool, serverAddress, rke2AgentType, rke2Token, TlsSan
 	fmt.Println(rke2NodeLabel)
 
 	rke2NodeLabelsArr := strings.Split(rke2NodeLabel, ",")
-
+	rke2NodeTaintsArr := strings.Split(rke2NodeTaints, ",")
 	cluster := []models.InitMaster{
 		{
-			NodeName:      hostname,
-			Token:         rke2Token,
-			TlsSan:        TlsSan,
-			Initialize:    initialize,
-			ServerAddress: serverAddress,
-			Rke2AgentType: rke2AgentType,
-			Rke2NodeLabel: rke2NodeLabelsArr,
+			NodeName:       hostname,
+			Token:          rke2Token,
+			TlsSan:         TlsSan,
+			Initialize:     initialize,
+			ServerAddress:  serverAddress,
+			Rke2AgentType:  rke2AgentType,
+			Rke2NodeLabel:  rke2NodeLabelsArr,
+			Rke2NodeTaints: rke2NodeTaintsArr,
 		},
 	}
 

@@ -40,6 +40,7 @@ With this tool, you can quickly provision both master and worker nodes.`,
 			config.RKE2Token,
 			config.TLSSan,
 			config.RKE2NodeLabel,
+			config.RKE2NodeTaints,
 		); err != nil {
 			logrus.Error("Config creation error:", err)
 			return
