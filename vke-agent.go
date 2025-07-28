@@ -105,6 +105,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&config.RKE2Token, "rke2Token", "", "RKE2 Token (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2AgentType, "rke2AgentType", "", "Type (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2NodeLabel, "rke2NodeLabel", "", "Node Label (required)")
+	rootCmd.PersistentFlags().StringVar(&config.RKE2NodeTaints, "rke2NodeTaints", "", "Node Taints (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterName, "rke2ClusterName", "", "Cluster Name (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterUUID, "rke2ClusterUUID", "", "Cluster UUID (required)")
 	rootCmd.PersistentFlags().StringVar(&config.RKE2ClusterProjectUUID, "rke2ClusterProjectUUID", "", "Cluster Project UUID (required)")
@@ -117,6 +118,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&config.ApplicationCredentialID, "applicationCredentialID", "", "Application Credential ID (required)")
 	rootCmd.PersistentFlags().StringVar(&config.ApplicationCredentialKey, "applicationCredentialKey", "", "Application Credential Key (required)")
 	rootCmd.PersistentFlags().StringVar(&config.LoadBalancerFloatingNetworkID, "loadBalancerFloatingNetworkID", "", "LoadBalancer Floating Network ID (required)")
+
 
 	rootCmd.SetHelpCommand(&cobra.Command{Use: "no-help-flag"})
 }
