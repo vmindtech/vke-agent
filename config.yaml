@@ -7,10 +7,6 @@ node-name: {{ .NodeName }}
 {{ if (eq .Rke2AgentType "server") }}node-taint:
   - "CriticalAddonsOnly=true:NoExecute"
 {{ else }}{{ end }}
-{{ if (eq .Rke2AgentType "server") }}node-label:
-  - "node-role.kubernetes.io/control-plane=true"
-  - "node-role.kubernetes.io/master=true"
-{{ else }}{{ end }}
 {{ if and (eq .Rke2AgentType "agent") .Rke2NodeTaints }}node-taint:
   {{- range $item := .Rke2NodeTaints }}
   - {{ $item }}
