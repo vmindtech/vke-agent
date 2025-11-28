@@ -244,11 +244,5 @@ func DeployHelmCharts(
 		return err
 	}
 
-	err = EditCanalHelmChartConfig()
-	if err != nil {
-		logrus.Error("Error editing Canal Helm chart config:", err)
-		return err
-	}
-
 	return nil
 }

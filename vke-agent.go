@@ -51,6 +51,11 @@ With this tool, you can quickly provision both master and worker nodes.`,
 			return
 		}
 
+		err := utils.EditCanalHelmChartConfig()
+		if err != nil {
+			logrus.Error("Canal Helm chart config editing error:", err)
+			return
+		}
 		if err := utils.RKE2ServiceEnable(config.RKE2AgentType); err != nil {
 			logrus.Error("Service enabled error:", err)
 			return
