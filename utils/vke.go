@@ -15,6 +15,36 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+func EditCanalHelmChartConfig() error {
+	var yamlFile = "/var/lib/rancher/rke2/server/manifests/rke2-canal.yml"
+
+	data, err := os.ReadFile(yamlFile)
+	if err != nil {
+		logrus.Error("Error reading YAML file:", err)
+		return err
+	}
+
+	var helmChartConfig models.HelmChartConfig
+	err = yaml.Unmarshal(data, &helmChartConfig)
+	if err != nil {
+		logrus.Error("Error unmarshaling YAML file:", err)
+		return err
+	}
+
+	if helmChartConfig.Spec.Set == nil {
+		helmChartConfig.Spec.Set = make(map[string]interface{})
+	}
+	helmChartConfig.Spec.Set["calico.vethMTU"] = 1350
+
+	newYamlData, err := yaml.Marshal(&helmChartConfig)
+	if err != nil {
+		logrus.Error("Error marshaling YAML:", err)
+		return err
+	}
+
+	return os.WriteFile(yamlFile, newYamlData, 0644)
+}
+
 func PushRKE2Config(
 	initialize bool,
 	rke2AgentType,
@@ -154,27 +184,6 @@ func DeployHelmCharts(
 		logrus.Error("Error executing YAML template:", err)
 		return err
 	}
-
-	yamlFile = "k8s-rke2-canal.yml"
-	yaml, err = template.New(yamlFile).ParseFiles(yamlFile)
-	if err != nil {
-		logrus.Error("Error parsing YAML file:", err)
-		return err
-	}
-
-	f, err = os.Create("/var/lib/rancher/rke2/server/manifests/k8s-rke2-canal.yml")
-	if err != nil {
-		logrus.Error("Error creating k8s-rke2-canal.yml file:", err)
-		return err
-	}
-	defer f.Close()
-
-	err = yaml.Execute(f, nil)
-	if err != nil {
-		logrus.Error("Error executing YAML template:", err)
-		return err
-	}
-
 	yamlFile = "k8s-cluster-autoscaler.yml"
 	yaml, err = template.New(yamlFile).ParseFiles(yamlFile)
 	if err != nil {
@@ -232,6 +241,12 @@ func DeployHelmCharts(
 	err = yaml.Execute(f, cluster)
 	if err != nil {
 		logrus.Error("Error executing YAML template:", err)
+		return err
+	}
+
+	err = EditCanalHelmChartConfig()
+	if err != nil {
+		logrus.Error("Error editing Canal Helm chart config:", err)
 		return err
 	}
 
