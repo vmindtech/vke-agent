@@ -121,34 +121,14 @@ func DeployHelmCharts(
 		return err
 	}
 
-	var yamlFile = "k8s-rke2-canal.yml"
+	var yamlFile = "k8s-helmchart-for-cloud-provider.yml"
 	yaml, err := template.New(yamlFile).ParseFiles(yamlFile)
 	if err != nil {
 		logrus.Error("Error parsing YAML file:", err)
 		return err
 	}
 
-	f, err := os.Create("/var/lib/rancher/rke2/server/manifests/k8s-rke2-canal.yml")
-	if err != nil {
-		logrus.Error("Error creating k8s-rke2-canal.yml file:", err)
-		return err
-	}
-	defer f.Close()
-
-	err = yaml.Execute(f, nil)
-	if err != nil {
-		logrus.Error("Error executing YAML template:", err)
-		return err
-	}
-
-	yamlFile = "k8s-helmchart-for-cloud-provider.yml"
-	yaml, err = template.New(yamlFile).ParseFiles(yamlFile)
-	if err != nil {
-		logrus.Error("Error parsing YAML file:", err)
-		return err
-	}
-
-	f, err = os.Create("/var/lib/rancher/rke2/server/manifests/k8s-helmchart-for-cloud-provider.yml")
+	f, err := os.Create("/var/lib/rancher/rke2/server/manifests/k8s-helmchart-for-cloud-provider.yml")
 	if err != nil {
 		logrus.Error("Error creating k8s-helmchart-for-cloud-provider.yml file:", err)
 		return err
@@ -174,6 +154,27 @@ func DeployHelmCharts(
 		logrus.Error("Error executing YAML template:", err)
 		return err
 	}
+
+	yamlFile = "k8s-rke2-canal.yml"
+	yaml, err = template.New(yamlFile).ParseFiles(yamlFile)
+	if err != nil {
+		logrus.Error("Error parsing YAML file:", err)
+		return err
+	}
+
+	f, err = os.Create("/var/lib/rancher/rke2/server/manifests/k8s-rke2-canal.yml")
+	if err != nil {
+		logrus.Error("Error creating k8s-rke2-canal.yml file:", err)
+		return err
+	}
+	defer f.Close()
+
+	err = yaml.Execute(f, nil)
+	if err != nil {
+		logrus.Error("Error executing YAML template:", err)
+		return err
+	}
+
 	yamlFile = "k8s-cluster-autoscaler.yml"
 	yaml, err = template.New(yamlFile).ParseFiles(yamlFile)
 	if err != nil {
