@@ -34,7 +34,7 @@ func EditCanalHelmChartConfig() error {
 	if helmChartConfig.Spec.Set == nil {
 		helmChartConfig.Spec.Set = make(map[string]interface{})
 	}
-	helmChartConfig.Spec.Set["calico.vethMTU"] = 1350
+	helmChartConfig.Spec.Set["calico.vethuMTU"] = 1350
 
 	newYamlData, err := yaml.Marshal(&helmChartConfig)
 	if err != nil {
