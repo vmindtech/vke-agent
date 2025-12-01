@@ -20,4 +20,4 @@ archives:
     vke-agent_{{.Tag}}_{{.Os}}_{{.Arch}}
   builds:
     - vke-agent
-  files: ["LICENSE","config.yaml","k8s-cluster-autoscaler.yml","k8s-helmchart-for-cloud-provider.yml","k8s-cinder-for-storage.yml", "k8s-vke-cluster-agent.yml"]
+  files: ["LICENSE","config.yaml","k8s-cluster-autoscaler.yml","k8s-helmchart-for-cloud-provider.yml","k8s-cinder-for-storage.yml", "k8s-vke-cluster-agent.yml", "k8s-rke2-canal-config.yml"]
