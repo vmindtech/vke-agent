@@ -16,6 +16,8 @@ spec:
     image:
       tag: "v{{.ClusterAgentVersion}}"
       pullPolicy: "IfNotPresent"
+    tolerations:
+      - operator: Exists
     environments:
       ENV: "production"
       golang_env: "production"
