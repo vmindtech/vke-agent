@@ -10,6 +10,8 @@ spec:
   bootstrap: true
   valuesContent: |-
     csi:
-      tolerations:
-        - operator: Exists
+      plugin:
+        nodePlugin:
+          tolerations:
+          - operator: Exists
 
