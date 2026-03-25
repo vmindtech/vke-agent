@@ -106,6 +106,7 @@ func PushRKE2Config(
 func DeployHelmCharts(
 	ClusterUUID,
 	RKE2ClusterProjectUUID,
+	RKE2ClusterName,
 	VkeCloudAuthURL,
 	ApplicationCredentialID,
 	ApplicationCredentialKey,
@@ -139,6 +140,7 @@ func DeployHelmCharts(
 		{
 			RKE2ClusterProjectUUID:        RKE2ClusterProjectUUID,
 			RKE2ClusterUUID:               ClusterUUID,
+			RKE2ClusterName:               RKE2ClusterName,
 			VkeCloudAuthURL:               VkeCloudAuthURL,
 			ApplicationCredentialID:       ApplicationCredentialID,
 			ApplicationCredentialKey:      ApplicationCredentialKey,

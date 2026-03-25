@@ -76,6 +76,7 @@ With this tool, you can quickly provision both master and worker nodes.`,
 			err = utils.DeployHelmCharts(
 				config.RKE2ClusterUUID,
 				config.RKE2ClusterProjectUUID,
+				config.RKE2ClusterName,
 				config.VkeCloudAuthURL,
 				config.ApplicationCredentialID,
 				config.ApplicationCredentialKey,

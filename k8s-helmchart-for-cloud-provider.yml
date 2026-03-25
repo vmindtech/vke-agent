@@ -9,6 +9,7 @@ spec:
   targetNamespace: kube-system
   bootstrap: true
   set:
+   cluster.name: "{{.RKE2ClusterName}}"
    cloudConfig.global.auth-url: "{{.VkeCloudAuthURL}}"
    cloudConfig.global.application-credential-id: "{{.ApplicationCredentialID}}"
    cloudConfig.global.application-credential-secret: "{{.ApplicationCredentialKey}}"
