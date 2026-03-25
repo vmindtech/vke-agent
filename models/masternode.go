@@ -11,6 +11,7 @@ type InitMaster struct {
 	Rke2NodeTaints                []string
 	RKE2ClusterProjectUUID        string
 	RKE2ClusterUUID               string
+	RKE2ClusterName               string
 	VkeCloudAuthURL               string
 	ApplicationCredentialID       string
 	ApplicationCredentialKey      string
