@@ -15,4 +15,5 @@ spec:
    cloudConfig.global.application-credential-secret: "{{.ApplicationCredentialKey}}"
    cloudConfig.global.tls-insecure: "yes"
    cloudConfig.loadBalancer.floating-network-id: "{{.LoadBalancerFloatingNetworkID}}"
+   image.tag: "{{.CloudProviderVkeVersion}}"
 {{ end }}
